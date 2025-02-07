@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'myob_acumatica'
 
 require 'sinatra/base'
