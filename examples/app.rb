@@ -41,7 +41,6 @@ module MyobAcumaticIntegration
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
         access_token: response['access_token'],
-        query_params: { filter: 'IsActive eq true' },
         logger: Logger.new($stdout)
       )
 
@@ -67,6 +66,27 @@ module MyobAcumaticIntegration
       {
         refresh_token: params[:refresh_token],
         response: response
+      }.to_json
+    end
+
+    get '/customers' do
+      customers = MyobAcumatica::Customer.list(
+        instance_url: ENV['INSTANCE_URL'],
+        endpoint_name: ENV['ENDPOINT_NAME'],
+        endpoint_version: ENV['ENDPOINT_VERSION'],
+        access_token: params['access_token'],
+        select: 'CustomerID, CustomerName, LastModifiedDateTime',
+        filter: "Status eq 'Active'",
+        expand: 'Contact',
+        skip: 2,
+        top: 3,
+        logger: Logger.new($stdout)
+      )
+
+      content_type :json
+
+      {
+        customers: customers
       }.to_json
     end
 
