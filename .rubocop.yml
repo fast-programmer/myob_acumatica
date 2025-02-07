@@ -15,3 +15,6 @@ Style/Documentation:
 Metrics/MethodLength:
   Enabled: true
   Max: 50
+
+Metrics/ParameterLists:
+  Enabled: false
