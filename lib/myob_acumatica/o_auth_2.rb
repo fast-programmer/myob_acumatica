@@ -2,7 +2,7 @@
 
 module MyobAcumatica
   module OAuth2
-    extend self
+    module_function
 
     def authorize_url(instance_url:, client_id:, redirect_uri:, scope:)
       "https://#{instance_url}/identity/connect/authorize?#{URI.encode_www_form({
@@ -41,7 +41,7 @@ module MyobAcumatica
     end
 
     module Http
-      extend self
+      module_function
 
       def post(uri:, body:, logger: nil)
         http = Net::HTTP.new(uri.host, uri.port)

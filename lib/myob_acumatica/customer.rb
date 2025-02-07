@@ -2,7 +2,7 @@
 
 module MyobAcumatica
   module Customer
-    extend self
+    module_function
 
     def list(instance_url:, endpoint_name:, endpoint_version:, access_token:, query_params: {}, logger: nil)
       uri = URI("https://#{instance_url}/entity/#{endpoint_name}/#{endpoint_version}/Customer")
