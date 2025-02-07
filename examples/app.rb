@@ -78,7 +78,7 @@ module MyobAcumaticIntegration
         query_params: {
           '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
           '$filter' => "Status eq 'Active'",
-          '$expand' => 'Contacts',
+          '$expand' => 'Contact',
           '$skip' => 2,
           '$top' => 3
         },

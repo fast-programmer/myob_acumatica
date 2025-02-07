@@ -33,6 +33,10 @@ module MyobAcumatica
         request = Net::HTTP::Get.new(uri, headers)
         response = http.request(request)
 
+        if !response.is_a?(Net::HTTPSuccess)
+          raise MyobAcumatica::Error.new("HTTP #{response.code}: #{response.body}")
+        end
+
         JSON.parse(response.body)
       end
     end
