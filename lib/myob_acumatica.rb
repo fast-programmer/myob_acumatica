@@ -11,5 +11,4 @@ require_relative 'myob_acumatica/o_auth_2'
 require_relative 'myob_acumatica/customer'
 
 module MyobAcumatica
-
 end
