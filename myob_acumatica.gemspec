@@ -26,12 +26,12 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'byebug'
-  spec.add_development_dependency 'dotenv'
-  spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'puma'
-  spec.add_development_dependency 'rackup'
-  spec.add_development_dependency 'rerun'
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'sinatra'
+  spec.add_development_dependency 'byebug', '~> 11.1'
+  spec.add_development_dependency 'dotenv', '~> 3.1'
+  spec.add_development_dependency 'pry', '~> 0.15'
+  spec.add_development_dependency 'puma', '~> 6.6'
+  spec.add_development_dependency 'rackup', '~> 2.2'
+  spec.add_development_dependency 'rerun', '~> 0.14'
+  spec.add_development_dependency 'rubocop', '~> 1.71'
+  spec.add_development_dependency 'sinatra', '~> 4.1'
 end

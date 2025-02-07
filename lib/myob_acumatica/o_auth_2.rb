@@ -13,7 +13,7 @@ module MyobAcumatica
       })}"
     end
 
-    def authorize(instance_url:, client_id:, client_secret:, code:, redirect_uri:, logger: nil)
+    def authorize_token(instance_url:, client_id:, client_secret:, code:, redirect_uri:, logger: nil)
       Http.post(
         uri: URI("https://#{instance_url}/identity/connect/token"),
         body: {
@@ -27,7 +27,7 @@ module MyobAcumatica
       )
     end
 
-    def refresh(instance_url:, client_id:, client_secret:, refresh_token:, logger: nil)
+    def refresh_token(instance_url:, client_id:, client_secret:, refresh_token:, logger: nil)
       Http.post(
         uri: URI("https://#{instance_url}/identity/connect/token"),
         body: {

@@ -27,7 +27,7 @@ module MyobAcumaticIntegration
     end
 
     get '/oauth2/callback' do
-      response = MyobAcumatica::OAuth2.authorize(
+      response = MyobAcumatica::OAuth2.authorize_token(
         instance_url: ENV['INSTANCE_URL'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
@@ -54,7 +54,7 @@ module MyobAcumaticIntegration
     end
 
     get '/oauth2/refresh' do
-      response = MyobAcumatica::OAuth2.refresh(
+      response = MyobAcumatica::OAuth2.refresh_token(
         instance_url: ENV['INSTANCE_URL'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
