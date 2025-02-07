@@ -6,8 +6,8 @@ on:
       - '**'
 
 jobs:
-  lint:
-    name: Lint with RuboCop
+  rubocop:
+    name: Run RuboCop
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
