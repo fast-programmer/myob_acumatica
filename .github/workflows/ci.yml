@@ -1,4 +1,4 @@
-name: RuboCop Linting
+name: CI
 
 on:
   pull_request:
@@ -6,8 +6,8 @@ on:
       - '**'
 
 jobs:
-  build:
-    name: Run RuboCop
+  lint:
+    name: Lint with RuboCop
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
