@@ -11,3 +11,7 @@
 
 Style/Documentation:
   Enabled: false
+
+Metrics/MethodLength:
+  Enabled: true
+  Max: 50
