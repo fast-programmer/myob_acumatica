@@ -24,3 +24,6 @@ Layout/FirstHashElementIndentation:
 
 Layout/HashAlignment:
   EnforcedStyle: key
+
+Style/NegatedIf:
+  Enabled: false

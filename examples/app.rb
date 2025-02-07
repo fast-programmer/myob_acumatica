@@ -75,11 +75,13 @@ module MyobAcumaticIntegration
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
         access_token: params['access_token'],
-        select: 'CustomerID, CustomerName, LastModifiedDateTime',
-        filter: "Status eq 'Active'",
-        expand: 'Contact',
-        skip: 2,
-        top: 3,
+        query_params: {
+          '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
+          '$filter' => "Status eq 'Active'",
+          '$expand' => 'Contacts',
+          '$skip' => 2,
+          '$top' => 3
+        },
         logger: Logger.new($stdout)
       )
 
