@@ -7,8 +7,8 @@ require 'logger'
 require 'pry'
 
 require_relative 'myob_acumatica/version'
-require_relative 'myob_acumatica/o_auth_2'
-require_relative 'myob_acumatica/customer'
+require_relative 'myob_acumatica/o_auth_2/token'
+require_relative 'myob_acumatica/api/customer'
 
 module MyobAcumatica
   class Error < StandardError; end

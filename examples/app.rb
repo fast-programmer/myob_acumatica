@@ -16,7 +16,7 @@ module MyobAcumaticIntegration
     end
 
     get '/oauth2/authorize' do
-      authorize_url = MyobAcumatica::OAuth2.authorize_url(
+      authorize_url = MyobAcumatica::OAuth2::Token.authorize_url(
         instance_url: ENV['INSTANCE_URL'],
         client_id: ENV['CLIENT_ID'],
         redirect_uri: ENV['REDIRECT_URI'],
@@ -27,7 +27,7 @@ module MyobAcumaticIntegration
     end
 
     get '/oauth2/callback' do
-      response = MyobAcumatica::OAuth2.authorize_token(
+      response = MyobAcumatica::OAuth2::Token.authorize(
         instance_url: ENV['INSTANCE_URL'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
@@ -36,7 +36,7 @@ module MyobAcumaticIntegration
         logger: logger
       )
 
-      customers = MyobAcumatica::Customer.list(
+      customers = MyobAcumatica::Api::Customer.list(
         instance_url: ENV['INSTANCE_URL'],
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
@@ -53,7 +53,7 @@ module MyobAcumaticIntegration
     end
 
     get '/oauth2/refresh' do
-      response = MyobAcumatica::OAuth2.refresh_token(
+      response = MyobAcumatica::OAuth2::Token.refresh(
         instance_url: ENV['INSTANCE_URL'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
@@ -70,7 +70,7 @@ module MyobAcumaticIntegration
     end
 
     get '/customers' do
-      customers = MyobAcumatica::Customer.list(
+      customers = MyobAcumatica::Api::Customer.list(
         instance_url: ENV['INSTANCE_URL'],
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
@@ -78,7 +78,7 @@ module MyobAcumaticIntegration
         query_params: {
           '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
           '$filter' => "Status eq 'Active'",
-          '$expand' => 'Contact',
+          '$expand' => 'Contacts',
           '$skip' => 2,
           '$top' => 3
         },

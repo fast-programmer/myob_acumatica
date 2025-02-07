@@ -21,7 +21,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 To initiate the OAuth2 flow, generate an authorization URL:
 
 ```ruby
-MyobAcumatica::OAuth2.authorize_url(
+MyobAcumatica::OAuth2::Token.authorize_url(
   instance_url: ...,
   client_id: ...,
   redirect_uri: ...,
@@ -40,7 +40,7 @@ After the user has authorized the application, they will be redirected back to y
 Use this code to request an access token:
 
 ```ruby
-MyobAcumatica::OAuth2.authorize_token(
+MyobAcumatica::OAuth2::Token.authorize(
   instance_url: ...,
   client_id: ...,
   client_secret: ...,
@@ -57,7 +57,7 @@ MyobAcumatica::OAuth2.authorize_token(
 If the access token expires, you can use the refresh token received during the token exchange to obtain a new access token:
 
 ```ruby
-MyobAcumatica::OAuth2.refresh_token(
+MyobAcumatica::OAuth2::Token.refresh(
   instance_url: ENV['INSTANCE_URL'],
   client_id: ENV['CLIENT_ID'],
   client_secret: ENV['CLIENT_SECRET'],
@@ -71,7 +71,7 @@ MyobAcumatica::OAuth2.refresh_token(
 ## 2. Hit the MYOB Accumatica API
 
 ```ruby
-customers = MyobAcumatica::Customer.list(
+customers = MyobAcumatica::Api::Customer.list(
   instance_url: ...,
   endpoint_name: 'Default',
   endpoint_version: ...,
