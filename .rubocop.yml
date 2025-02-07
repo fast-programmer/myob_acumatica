@@ -18,3 +18,9 @@ Metrics/MethodLength:
 
 Metrics/ParameterLists:
   Enabled: false
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/HashAlignment:
+  EnforcedStyle: key
