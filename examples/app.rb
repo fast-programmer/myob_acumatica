@@ -66,7 +66,7 @@ module MyobAcumaticIntegration
 
       {
         refresh_token: params[:refresh_token],
-        response: response,
+        response: response
       }.to_json
     end
 
