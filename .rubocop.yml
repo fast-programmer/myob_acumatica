@@ -27,3 +27,6 @@ Layout/HashAlignment:
 
 Style/NegatedIf:
   Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
