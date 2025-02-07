@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module MyobAcumatica
   module OAuth2
     extend self
