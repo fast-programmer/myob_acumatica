@@ -35,7 +35,7 @@ module MyobAcumatica
           response = http.request(request)
 
           if !response.is_a?(Net::HTTPSuccess)
-            raise MyobAcumatica::Api::Error, "HTTP #{response.code}: #{response.body}"
+            raise MyobAcumatica::Error, "HTTP #{response.code}: #{response.body}"
           end
 
           JSON.parse(response.body)
