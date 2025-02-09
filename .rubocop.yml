@@ -30,3 +30,12 @@ Style/NegatedIf:
 
 Style/IfUnlessModifier:
   Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/CyclomaticComplexity:
+  Max: 10
