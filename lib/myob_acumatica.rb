@@ -7,7 +7,11 @@ require 'logger'
 require 'pry'
 
 require_relative 'myob_acumatica/version'
+require_relative 'myob_acumatica/o_auth_2/http'
 require_relative 'myob_acumatica/o_auth_2/token'
+
+require_relative 'myob_acumatica/api'
+require_relative 'myob_acumatica/api/http'
 require_relative 'myob_acumatica/api/customer'
 
 module MyobAcumatica
