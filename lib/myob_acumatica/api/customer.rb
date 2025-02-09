@@ -7,15 +7,15 @@ require 'json'
 module MyobAcumatica
   module Api
     ENDPOINT_NAME = 'Default'
-    ENDPOINT_PATH = '20.200.001'
+    ENDPOINT_VERSION = '20.200.001'
 
     module Http
       module_function
 
       def request(access_token:, method:, instance_url:, endpoint_name:, endpoint_version:, path:,
-                  query_params: nil, body: nil, logger: nil)
+                  query_params: {}, body: nil, logger: nil)
         uri = URI("https://#{instance_url}/entity/#{endpoint_name}/#{endpoint_version}/#{path}")
-        uri.query = URI.encode_www_form(query_params) unless query_params.nil?
+        uri.query = URI.encode_www_form(query_params) unless query_params.empty?
 
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = uri.scheme == 'https'
@@ -37,8 +37,10 @@ module MyobAcumatica
         response = http.request(request)
 
         case response
-        when Net::HTTPSuccess, Net::HTTPNoContent
-          response.body.empty? ? nil : JSON.parse(response.body)
+        when Net::HTTPNoContent
+          nil
+        when Net::HTTPSuccess
+          JSON.parse(response.body)
         else
           raise MyobAcumatica::Error, "HTTP #{response.code}: #{response.body}"
         end
@@ -49,7 +51,7 @@ module MyobAcumatica
       module_function
 
       def delete_by_id(access_token:, instance_url:, id:,
-                       endpoint_name: ENDPOINT_NAME, endpoint_version: ENDPOINT_VERSION,
+                       endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
                        logger: nil)
         Http.request(
           access_token: access_token,
@@ -152,7 +154,7 @@ module MyobAcumatica
       end
 
       def put_entity(access_token:, instance_url:, body:, query_params: {},
-                     endpoint_name: ENDPOINT_NAME, endpoint_version: ENDPOINT_VERSION,
+                     endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
                      logger: nil)
         Http.request(
           access_token: access_token,

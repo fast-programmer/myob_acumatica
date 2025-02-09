@@ -71,7 +71,7 @@ MyobAcumatica::OAuth2::Token.refresh(
 ## 2. Hit the MYOB Accumatica API
 
 ```ruby
-customers = MyobAcumatica::Api::Customer.list(
+customers = MyobAcumatica::Api::Customer.get_list(
   instance_url: ...,
   endpoint_name: 'Default',
   endpoint_version: ...,

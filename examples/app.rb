@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'myob_acumatica'
-
 require 'sinatra/base'
 require 'dotenv'
+
+require 'myob_acumatica'
 
 Dotenv.load
 
@@ -36,7 +36,7 @@ module MyobAcumaticIntegration
         logger: logger
       )
 
-      customers = MyobAcumatica::Api::Customer.list(
+      customers = MyobAcumatica::Api::Customer.get_list(
         instance_url: ENV['INSTANCE_URL'],
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
@@ -70,17 +70,17 @@ module MyobAcumaticIntegration
     end
 
     get '/customers' do
-      customers = MyobAcumatica::Api::Customer.list(
+      customers = MyobAcumatica::Api::Customer.get_list(
         instance_url: ENV['INSTANCE_URL'],
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
         access_token: params['access_token'],
         query_params: {
-          '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
-          '$filter' => "Status eq 'Active'",
-          '$expand' => 'Contacts',
-          '$skip' => 2,
-          '$top' => 3
+          # '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
+          # '$filter' => "Status eq 'Active'",
+          # '$expand' => 'Contacts',
+          # '$skip' => 2,
+          # '$top' => 3
         },
         logger: Logger.new($stdout)
       )
