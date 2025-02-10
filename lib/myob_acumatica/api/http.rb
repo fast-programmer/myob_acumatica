@@ -5,9 +5,9 @@ module MyobAcumatica
     module Http
       module_function
 
-      def request(access_token:, method:, instance_url:, endpoint_name:, endpoint_version:, path:,
+      def request(access_token:, method:, instance_host:, endpoint_name:, endpoint_version:, path:,
                   query_params: {}, body: nil, logger: nil)
-        uri = URI("https://#{instance_url}/entity/#{endpoint_name}/#{endpoint_version}/#{path}")
+        uri = URI("https://#{instance_host}/entity/#{endpoint_name}/#{endpoint_version}/#{path}")
         uri.query = URI.encode_www_form(query_params) unless query_params.empty?
 
         http = Net::HTTP.new(uri.host, uri.port)

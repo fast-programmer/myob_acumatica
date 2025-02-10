@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rerun', '~> 0.14'
   spec.add_development_dependency 'rubocop', '~> 1.71'
   spec.add_development_dependency 'sinatra', '~> 4.1'
+  spec.add_development_dependency 'yard', '~> 0.9'
 end

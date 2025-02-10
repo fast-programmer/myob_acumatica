@@ -22,13 +22,13 @@ To initiate the OAuth2 flow, generate an authorization URL:
 
 ```ruby
 MyobAcumatica::OAuth2::Token.authorize_url(
-  instance_url: ...,
+  instance_host: ...,
   client_id: ...,
   redirect_uri: ...,
   scope: 'api offline'
 )
 
-=> https://{instance_url}/identity/connect/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope=api+offline_access
+=> https://{instance_host}/identity/connect/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope=api+offline_access
 ```
 
 Then redirect users to this URL to start the authorization process.
@@ -41,7 +41,7 @@ Use this code to request an access token:
 
 ```ruby
 MyobAcumatica::OAuth2::Token.authorize(
-  instance_url: ...,
+  instance_host: ...,
   client_id: ...,
   client_secret: ...,
   code: params['code'],
@@ -58,7 +58,7 @@ If the access token expires, you can use the refresh token received during the t
 
 ```ruby
 MyobAcumatica::OAuth2::Token.refresh(
-  instance_url: ENV['INSTANCE_URL'],
+  instance_host: ENV['INSTANCE_HOST'],
   client_id: ENV['CLIENT_ID'],
   client_secret: ENV['CLIENT_SECRET'],
   refresh_token: params[:refresh_token],
@@ -72,10 +72,10 @@ MyobAcumatica::OAuth2::Token.refresh(
 
 ```ruby
 customers = MyobAcumatica::Api::Customer.get_list(
-  instance_url: ...,
+  access_token: token['access_token'],
+  instance_host: ...,
   endpoint_name: 'Default',
   endpoint_version: ...,
-  access_token: token['access_token'],
   query_params: { filter: 'IsActive eq true' },
   logger: Logger.new($stdout)
 )

@@ -17,7 +17,7 @@ module MyobAcumaticIntegration
 
     get '/oauth2/authorize' do
       authorize_url = MyobAcumatica::OAuth2::Token.authorize_url(
-        instance_url: ENV['INSTANCE_URL'],
+        instance_host: ENV['INSTANCE_HOST'],
         client_id: ENV['CLIENT_ID'],
         redirect_uri: ENV['REDIRECT_URI'],
         scope: ENV['SCOPE']
@@ -28,7 +28,7 @@ module MyobAcumaticIntegration
 
     get '/oauth2/callback' do
       response = MyobAcumatica::OAuth2::Token.authorize(
-        instance_url: ENV['INSTANCE_URL'],
+        instance_host: ENV['INSTANCE_HOST'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
         code: params[:code],
@@ -37,7 +37,7 @@ module MyobAcumaticIntegration
       )
 
       customers = MyobAcumatica::Api::Customer.get_list(
-        instance_url: ENV['INSTANCE_URL'],
+        instance_host: ENV['INSTANCE_HOST'],
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
         access_token: response['access_token'],
@@ -54,7 +54,7 @@ module MyobAcumaticIntegration
 
     get '/oauth2/refresh' do
       response = MyobAcumatica::OAuth2::Token.refresh(
-        instance_url: ENV['INSTANCE_URL'],
+        instance_host: ENV['INSTANCE_HOST'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
         refresh_token: params[:refresh_token],
@@ -71,7 +71,7 @@ module MyobAcumaticIntegration
 
     get '/customers' do
       customers = MyobAcumatica::Api::Customer.get_list(
-        instance_url: ENV['INSTANCE_URL'],
+        instance_host: ENV['INSTANCE_HOST'],
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
         access_token: params['access_token'],
