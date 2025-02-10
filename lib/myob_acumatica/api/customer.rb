@@ -3,6 +3,7 @@
 module MyobAcumatica
   module Api
     # Provides methods to interact with the Customer API endpoints.
+
     module Customer
       module_function
 
@@ -36,6 +37,13 @@ module MyobAcumatica
       end
 
       # Deletes a customer by composite keys.
+      # @example Delete a customer by keys
+      #   MyobAcumatica::Api::Customer.delete_by_keys(
+      #     access_token: 'your_access_token',
+      #     instance_host: 'example.myobadvanced.com',
+      #     keys: ['key1', 'key2'],
+      #     logger: Logger.new($stdout)
+      #   )
       # @param access_token [String] The OAuth2 access token.
       # @param instance_host [String] The base URL of the API instance.
       # @param keys [Array<String>] An array of keys that uniquely identify the customer.
@@ -58,6 +66,12 @@ module MyobAcumatica
       end
 
       # Retrieves the ad-hoc schema for the customer endpoint.
+      # @example Retrieve the ad-hoc schema
+      #   MyobAcumatica::Api::Customer.get_ad_hoc_schema(
+      #     access_token: 'your_access_token',
+      #     instance_host: 'example.myobadvanced.com',
+      #     logger: Logger.new($stdout)
+      #   )
       # @param access_token [String] The OAuth2 access token.
       # @param instance_host [String] The base URL of the API instance.
       # @param endpoint_name [String] The endpoint name.
@@ -79,6 +93,13 @@ module MyobAcumatica
       end
 
       # Retrieves a customer by ID.
+      # @example Retrieve a customer by ID
+      #   MyobAcumatica::Api::Customer.get_by_id(
+      #     access_token: 'your_access_token',
+      #     instance_host: 'example.myobadvanced.com',
+      #     id: 'customer_id',
+      #     logger: Logger.new($stdout)
+      #   )
       # @param access_token [String] The OAuth2 access token.
       # @param instance_host [String] The base URL of the API instance.
       # @param id [String] The unique ID of the customer.
@@ -103,6 +124,13 @@ module MyobAcumatica
       end
 
       # Retrieves a customer by keys.
+      # @example Retrieve a customer by keys
+      #   MyobAcumatica::Api::Customer.get_by_keys(
+      #     access_token: 'your_access_token',
+      #     instance_host: 'example.myobadvanced.com',
+      #     keys: ['key1', 'key2'],
+      #     logger: Logger.new($stdout)
+      #   )
       # @param access_token [String] The OAuth2 access token.
       # @param instance_host [String] The base URL of the API instance.
       # @param keys [Array<String>] An array of keys that uniquely identify the customer.
@@ -127,6 +155,12 @@ module MyobAcumatica
       end
 
       # Retrieves a list of customers.
+      # @example Retrieve a list of customers
+      #   MyobAcumatica::Api::Customer.get_list(
+      #     access_token: 'your_access_token',
+      #     instance_host: 'example.myobadvanced.com',
+      #     logger: Logger.new($stdout)
+      #   )
       # @param access_token [String] The OAuth2 access token.
       # @param instance_host [String] The base URL of the API instance.
       # @param query_params [Hash] Additional query parameters for the request.
@@ -150,6 +184,14 @@ module MyobAcumatica
       end
 
       # Invokes a custom action on a customer.
+      # @example Invoke a custom action on a customer
+      #   MyobAcumatica::Api::Customer.invoke_action_custom_action(
+      #     access_token: 'your_access_token',
+      #     instance_host: 'example.myobadvanced.com',
+      #     action_name: 'Activate',
+      #     body: { 'id' => 'customer_id' },
+      #     logger: Logger.new($stdout)
+      #   )
       # @param access_token [String] The OAuth2 access token.
       # @param instance_host [String] The base URL of the API instance.
       # @param action_name [String] The name of the action to invoke.
@@ -177,6 +219,28 @@ module MyobAcumatica
       alias_method :invoke_action, :invoke_action_custom_action
 
       # Updates or creates a customer entity.
+      # @example Update or create a customer entity with detailed information
+      #   MyobAcumatica::Api::Customer.put_entity(
+      #     access_token: 'your_access_token',
+      #     instance_host: 'example.myobadvanced.com',
+      #     body: {
+      #       'CustomerID' => { 'value' => 'JOHNGOOD' },
+      #       'CustomerName' => { 'value' => 'John Good' },
+      #       'CustomerClass' => { 'value' => 'CUSTDFT' },
+      #       'MainContact' => {
+      #         'Email' => { 'value' => 'demo@gmail.com' },
+      #         'Address' => {
+      #           'AddressLine1' => { 'value' => '4030 Lake Washington Blvd NE' },
+      #           'AddressLine2' => { 'value' => 'Suite 100' },
+      #           'City' => { 'value' => 'Kirkland' },
+      #           'State' => { 'value' => 'WA' },
+      #           'PostalCode' => { 'value' => '98033' },
+      #           'Country' => { 'value' => 'US' }
+      #         }
+      #       }
+      #     },
+      #     logger: Logger.new($stdout)
+      #   )
       # @param access_token [String] The OAuth2 access token.
       # @param instance_host [String] The base URL of the API instance.
       # @param body [Hash] The body of the request containing customer details.
@@ -202,6 +266,14 @@ module MyobAcumatica
       end
 
       # Uploads a file for a customer.
+      # @example Upload a file for a customer
+      #   MyobAcumatica::Api::Customer.put_file(
+      #     access_token: 'your_access_token',
+      #     instance_host: 'example.myobadvanced.com',
+      #     ids: 'customer_id',
+      #     filename: 'document.pdf',
+      #     logger: Logger.new($stdout)
+      #   )
       # @param access_token [String] The OAuth2 access token.
       # @param instance_host [String] The base URL of the API instance.
       # @param ids [String] The customer ID.
