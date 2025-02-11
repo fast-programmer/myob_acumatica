@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'myob_acumatica'
-
 require 'sinatra/base'
 require 'dotenv'
+
+require 'myob_acumatica'
 
 Dotenv.load
 
@@ -16,8 +16,8 @@ module MyobAcumaticIntegration
     end
 
     get '/oauth2/authorize' do
-      authorize_url = MyobAcumatica::OAuth2.authorize_url(
-        instance_url: ENV['INSTANCE_URL'],
+      authorize_url = MyobAcumatica::OAuth2::Token.authorize_url(
+        instance_host: ENV['INSTANCE_HOST'],
         client_id: ENV['CLIENT_ID'],
         redirect_uri: ENV['REDIRECT_URI'],
         scope: ENV['SCOPE']
@@ -27,8 +27,8 @@ module MyobAcumaticIntegration
     end
 
     get '/oauth2/callback' do
-      response = MyobAcumatica::OAuth2.authorize_token(
-        instance_url: ENV['INSTANCE_URL'],
+      response = MyobAcumatica::OAuth2::Token.authorize(
+        instance_host: ENV['INSTANCE_HOST'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
         code: params[:code],
@@ -36,12 +36,11 @@ module MyobAcumaticIntegration
         logger: logger
       )
 
-      customers = MyobAcumatica::Customer.list(
-        instance_url: ENV['INSTANCE_URL'],
+      customers = MyobAcumatica::Api::Customer.get_list(
+        instance_host: ENV['INSTANCE_HOST'],
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
         access_token: response['access_token'],
-        query_params: { filter: 'IsActive eq true' },
         logger: Logger.new($stdout)
       )
 
@@ -54,8 +53,8 @@ module MyobAcumaticIntegration
     end
 
     get '/oauth2/refresh' do
-      response = MyobAcumatica::OAuth2.refresh_token(
-        instance_url: ENV['INSTANCE_URL'],
+      response = MyobAcumatica::OAuth2::Token.refresh(
+        instance_host: ENV['INSTANCE_HOST'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
         refresh_token: params[:refresh_token],
@@ -67,6 +66,29 @@ module MyobAcumaticIntegration
       {
         refresh_token: params[:refresh_token],
         response: response
+      }.to_json
+    end
+
+    get '/customers' do
+      customers = MyobAcumatica::Api::Customer.get_list(
+        instance_host: ENV['INSTANCE_HOST'],
+        endpoint_name: ENV['ENDPOINT_NAME'],
+        endpoint_version: ENV['ENDPOINT_VERSION'],
+        access_token: params['access_token'],
+        query_params: {
+          # '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
+          # '$filter' => "Status eq 'Active'",
+          # '$expand' => 'Contacts',
+          # '$skip' => 2,
+          # '$top' => 3
+        },
+        logger: Logger.new($stdout)
+      )
+
+      content_type :json
+
+      {
+        customers: customers
       }.to_json
     end
 
