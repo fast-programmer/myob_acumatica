@@ -102,9 +102,16 @@ customers = MyobAcumatica::Api::Customer.get_list(
   logger: logger
 )
 
-MyobAcumatica::Api::Customer.delete_by_id(
+# MyobAcumatica::Api::Customer.delete_by_id(
+#   access_token: access_token,
+#   instance_host: instance_host,
+#   id: customer_id,
+#   logger: logger
+# )
+
+MyobAcumatica::Api::Customer.delete_by_keys(
   access_token: access_token,
   instance_host: instance_host,
-  id: customer_id,
+  keys: [customer_key],
   logger: logger
 )

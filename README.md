@@ -48,7 +48,13 @@ MyobAcumatica::OAuth2::Token.authorize(
   redirect_uri: ...,
 )
 
-=> {"access_token":"abc",expires_in":3600,"token_type":"Bearer","refresh_token":"def","scope":"api offline_access"}
+=> {
+  "access_token" => "abc",
+  "expires_in" => 3600,
+  "token_type" => "Bearer",
+  "refresh_token" => "def",
+  "scope" => "api offline_access"
+}
 ```
 
 

@@ -16,12 +16,12 @@ module MyobAcumatica
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param instance_host [String] The base URL of the API instance.
+      # @param instance_host [String] The host of the instance.
       # @param id [String] The unique ID of the customer.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The HTTP response body as a hash.
+      # @return [nil] Always nil.
       def delete_by_id(access_token:, instance_host:, id:,
                        endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
                        logger: nil)
@@ -41,16 +41,16 @@ module MyobAcumatica
       #   MyobAcumatica::Api::Customer.delete_by_keys(
       #     access_token: 'your_access_token',
       #     instance_host: 'example.myobadvanced.com',
-      #     keys: ['key1', 'key2'],
+      #     keys: ['key1'],
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param instance_host [String] The base URL of the API instance.
+      # @param instance_host [String] The host of the instance.
       # @param keys [Array<String>] An array of keys that uniquely identify the customer.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The HTTP response body as a hash.
+      # @return [nil] Always nil.
       def delete_by_keys(access_token:, instance_host:, keys:,
                          endpoint_name: ENDPOINT_NAME, endpoint_version: ENDPOINT_VERSION,
                          logger: nil)
@@ -73,11 +73,11 @@ module MyobAcumatica
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param instance_host [String] The base URL of the API instance.
+      # @param instance_host [String] The host of the instance.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The HTTP response body as a hash.
+      # @return [Hash] The ad hoc schema
       def get_ad_hoc_schema(access_token:, instance_host:,
                             endpoint_name: ENDPOINT_NAME, endpoint_version: ENDPOINT_VERSION,
                             logger: nil)
@@ -101,13 +101,13 @@ module MyobAcumatica
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param instance_host [String] The base URL of the API instance.
+      # @param instance_host [String] The host of the instance.
       # @param id [String] The unique ID of the customer.
       # @param query_params [Hash] Additional query parameters for the request.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The HTTP response body as a hash.
+      # @return [Hash] The customer
       def get_by_id(access_token:, instance_host:, id:, query_params: {},
                     endpoint_name: ENDPOINT_NAME, endpoint_version: ENDPOINT_VERSION,
                     logger: nil)
@@ -128,17 +128,17 @@ module MyobAcumatica
       #   MyobAcumatica::Api::Customer.get_by_keys(
       #     access_token: 'your_access_token',
       #     instance_host: 'example.myobadvanced.com',
-      #     keys: ['key1', 'key2'],
+      #     keys: ['key1'],
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param instance_host [String] The base URL of the API instance.
+      # @param instance_host [String] The host of the instance.
       # @param keys [Array<String>] An array of keys that uniquely identify the customer.
       # @param query_params [Hash] Additional query parameters for the request.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The HTTP response body as a hash.
+      # @return [Hash] The customer
       def get_by_keys(access_token:, instance_host:, keys:, query_params: {},
                       endpoint_name: ENDPOINT_NAME, endpoint_version: ENDPOINT_VERSION,
                       logger: nil)
@@ -170,7 +170,7 @@ module MyobAcumatica
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param instance_host [String] The base URL of the API instance.
+      # @param instance_host [String] The host of the instance.
       # @param query_params [Hash] Additional query parameters for the request.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
@@ -201,13 +201,13 @@ module MyobAcumatica
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param instance_host [String] The base URL of the API instance.
+      # @param instance_host [String] The host of the instance.
       # @param action_name [String] The name of the action to invoke.
       # @param body [Hash] The request body parameters.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The HTTP response body as a hash.
+      # @return [Hash] The response body
       def invoke_action_custom_action(access_token:, instance_host:, action_name:, body:,
                                       endpoint_name: ENDPOINT_NAME,
                                       endpoint_version: ENDPOINT_VERSION,
@@ -250,13 +250,13 @@ module MyobAcumatica
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param instance_host [String] The base URL of the API instance.
+      # @param instance_host [String] The host of the instance.
       # @param body [Hash] The body of the request containing customer details.
       # @param query_params [Hash] Additional query parameters for the request.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The HTTP response body as a hash.
+      # @return [Hash] The customer
       def put_entity(access_token:, instance_host:, body:, query_params: {},
                      endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
                      logger: nil)
@@ -283,13 +283,13 @@ module MyobAcumatica
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param instance_host [String] The base URL of the API instance.
+      # @param instance_host [String] The host of the instance.
       # @param ids [String] The customer ID.
       # @param filename [String] The filename of the file to upload.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The HTTP response body as a hash.
+      # @return [Hash] The response body
       def put_file(access_token:, instance_host:, ids:, filename:,
                    endpoint_name: ENDPOINT_NAME, endpoint_version: ENDPOINT_VERSION,
                    logger: nil)
