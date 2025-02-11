@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Lint/UselessAssignment
+
 require 'json'
 require 'logger'
 require 'byebug'
@@ -45,7 +47,7 @@ customer = MyobAcumatica::Api::Customer.put_entity(
   instance_host: instance_host,
   body: {
     'CustomerID' => { 'value' => customer_key },
-    'CustomerName' => { 'value' => 'John Good Updated' },
+    'CustomerName' => { 'value' => 'John Good Updated' }
   },
   logger: logger
 )
@@ -115,3 +117,5 @@ MyobAcumatica::Api::Customer.delete_by_keys(
   keys: [customer_key],
   logger: logger
 )
+
+# rubocop:enable Lint/UselessAssignment

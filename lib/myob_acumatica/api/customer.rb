@@ -224,7 +224,7 @@ module MyobAcumatica
         )
       end
 
-      alias_method :invoke_action, :invoke_action_custom_action
+      alias invoke_action invoke_action_custom_action
 
       # Updates or creates a customer entity.
       # @example Update or create a customer entity with detailed information
