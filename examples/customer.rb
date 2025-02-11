@@ -93,7 +93,8 @@ customers = MyobAcumatica::Api::Customer.get_list(
   instance_host: instance_host,
   query_params: {
     '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
-    '$filter' => "Status eq 'Active'",
+    '$filter' => "Status eq 'Active' and "\
+      "LastModifiedDateTime gt datetimeoffset'2020-08-18T23:59:59.999+04:00'",
     '$expand' => 'Contacts',
     '$skip' => 2,
     '$top' => 3

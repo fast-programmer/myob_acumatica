@@ -155,10 +155,18 @@ module MyobAcumatica
       end
 
       # Retrieves a list of customers.
-      # @example Retrieve a list of customers
-      #   MyobAcumatica::Api::Customer.get_list(
+      # @example Retrieve a list of customers with specific query parameters
+      #   customers = MyobAcumatica::Api::Customer.get_list(
       #     access_token: 'your_access_token',
       #     instance_host: 'example.myobadvanced.com',
+      #     query_params: {
+      #       '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
+      #       '$filter' => "Status eq 'Active' and "\
+      #         "LastModifiedDateTime gt datetimeoffset'2020-08-18T23:59:59.999+04:00'",
+      #       '$expand' => 'Contacts',
+      #       '$skip' => 2,
+      #       '$top' => 3
+      #     },
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
