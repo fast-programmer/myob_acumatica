@@ -5,8 +5,8 @@ module MyobAcumatica
     module Token
       module_function
 
-      def authorize_url(instance_host:, client_id:, redirect_uri:, scope:)
-        "https://#{instance_host}/identity/connect/authorize?#{URI.encode_www_form({
+      def authorize_url(instance_name:, client_id:, redirect_uri:, scope:)
+        "https://#{instance_name}/identity/connect/authorize?#{URI.encode_www_form({
           response_type: 'code',
           client_id: client_id,
           redirect_uri: redirect_uri,
@@ -14,9 +14,9 @@ module MyobAcumatica
         })}"
       end
 
-      def authorize(instance_host:, client_id:, client_secret:, code:, redirect_uri:, logger: nil)
+      def authorize(instance_name:, client_id:, client_secret:, code:, redirect_uri:, logger: nil)
         Http.post(
-          uri: URI("https://#{instance_host}/identity/connect/token"),
+          uri: URI("https://#{instance_name}/identity/connect/token"),
           body: {
             grant_type: 'authorization_code',
             client_id: client_id,
@@ -28,9 +28,9 @@ module MyobAcumatica
         )
       end
 
-      def refresh(instance_host:, client_id:, client_secret:, refresh_token:, logger: nil)
+      def refresh(instance_name:, client_id:, client_secret:, refresh_token:, logger: nil)
         Http.post(
-          uri: URI("https://#{instance_host}/identity/connect/token"),
+          uri: URI("https://#{instance_name}/identity/connect/token"),
           body: {
             grant_type: 'refresh_token',
             client_id: client_id,

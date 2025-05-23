@@ -17,7 +17,7 @@ module MyobAcumaticIntegration
 
     get '/oauth2/authorize' do
       authorize_url = MyobAcumatica::OAuth2::Token.authorize_url(
-        instance_host: ENV['INSTANCE_HOST'],
+        instance_name: ENV['INSTANCE_NAME'],
         client_id: ENV['CLIENT_ID'],
         redirect_uri: ENV['REDIRECT_URI'],
         scope: ENV['SCOPE']
@@ -28,7 +28,7 @@ module MyobAcumaticIntegration
 
     get '/oauth2/callback' do
       response = MyobAcumatica::OAuth2::Token.authorize(
-        instance_host: ENV['INSTANCE_HOST'],
+        instance_name: ENV['INSTANCE_NAME'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
         code: params[:code],
@@ -37,10 +37,10 @@ module MyobAcumaticIntegration
       )
 
       customers = MyobAcumatica::Api::Customer.get_list(
-        instance_host: ENV['INSTANCE_HOST'],
+        instance_name: ENV['INSTANCE_NAME'],
+        access_token: response['access_token'],
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
-        access_token: response['access_token'],
         logger: Logger.new($stdout)
       )
 
@@ -54,7 +54,7 @@ module MyobAcumaticIntegration
 
     get '/oauth2/refresh' do
       response = MyobAcumatica::OAuth2::Token.refresh(
-        instance_host: ENV['INSTANCE_HOST'],
+        instance_name: ENV['INSTANCE_NAME'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
         refresh_token: params[:refresh_token],
@@ -71,9 +71,7 @@ module MyobAcumaticIntegration
 
     get '/customers' do
       customers = MyobAcumatica::Api::Customer.get_list(
-        instance_host: ENV['INSTANCE_HOST'],
-        endpoint_name: ENV['ENDPOINT_NAME'],
-        endpoint_version: ENV['ENDPOINT_VERSION'],
+        instance_name: ENV['INSTANCE_NAME'],
         access_token: params['access_token'],
         query_params: {
           # '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
@@ -82,6 +80,8 @@ module MyobAcumaticIntegration
           # '$skip' => 2,
           # '$top' => 3
         },
+        endpoint_name: ENV['ENDPOINT_NAME'],
+        endpoint_version: ENV['ENDPOINT_VERSION'],
         logger: Logger.new($stdout)
       )
 
