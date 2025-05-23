@@ -47,7 +47,7 @@ customer = MyobAcumatica::Api::Customer.put_entity(
   access_token: access_token,
   body: {
     'CustomerID' => { 'value' => customer_key },
-    'CustomerName' => { 'value' => 'John Good Updated' }
+    'CustomerName' => { 'value' => 'John Good Updated 2' }
   },
   logger: logger
 )

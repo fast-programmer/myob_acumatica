@@ -70,15 +70,18 @@ module MyobAcumaticIntegration
     end
 
     get '/customers' do
+      timestamp = (Time.now - 1 * 3600).utc.strftime('%Y-%m-%dT%H:%M:%S.%L+00:00')
+      filter = "Status eq 'Active' and LastModifiedDateTime gt datetimeoffset'#{timestamp}'"
+
       customers = MyobAcumatica::Api::Customer.get_list(
         instance_name: ENV['INSTANCE_NAME'],
         access_token: params['access_token'],
         query_params: {
-          # '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
-          # '$filter' => "Status eq 'Active'",
-          # '$expand' => 'Contacts',
-          # '$skip' => 2,
-          # '$top' => 3
+          '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
+          '$filter' => filter,
+          '$expand' => 'Contacts',
+          '$skip' => 0,
+          '$top' => 2
         },
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
