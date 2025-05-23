@@ -69,20 +69,74 @@ module MyobAcumaticIntegration
       }.to_json
     end
 
-    get '/customers' do
-      timestamp = (Time.now - 1 * 3600).utc.strftime('%Y-%m-%dT%H:%M:%S.%L+00:00')
-      filter = "Status eq 'Active' and LastModifiedDateTime gt datetimeoffset'#{timestamp}'"
+    # get '/customers' do
+    #   timestamp = (Time.now - 1 * 3600).utc.strftime('%Y-%m-%dT%H:%M:%S.%L+00:00')
+    #   filter = "Status eq 'Active' and LastModifiedDateTime gt datetimeoffset'#{timestamp}'"
 
-      customers = MyobAcumatica::Api::Customer.get_list(
+    #   customers = MyobAcumatica::Api::Customer.get_list(
+    #     instance_name: ENV['INSTANCE_NAME'],
+    #     access_token: params['access_token'],
+    #     query_params: {
+    #       '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
+    #       '$filter' => filter,
+    #       '$expand' => 'Contacts',
+    #       '$skip' => 0,
+    #       '$top' => 2
+    #     },
+    #     endpoint_name: ENV['ENDPOINT_NAME'],
+    #     endpoint_version: ENV['ENDPOINT_VERSION'],
+    #     logger: Logger.new($stdout)
+    #   )
+
+    #   content_type :json
+
+    #   {
+    #     customers: customers
+    #   }.to_json
+    # end
+
+    get '/customers' do
+      page_size = 1
+      skip = 0
+
+      customer_enum = Enumerator.new do |yielder|
+        customers = MyobAcumatica::Api::Customer.get_list(
+          instance_name: ENV['INSTANCE_NAME'],
+          access_token: params['access_token'],
+          query_params: {
+            '$top' => page_size,
+            '$skip' => skip
+          }
+        )
+
+        while customers.size == page_size
+          yielder << customers
+          skip += page_size
+
+          customers = MyobAcumatica::Api::Customer.get_list(
+            instance_name: ENV['INSTANCE_NAME'],
+            access_token: params['access_token'],
+            query_params: {
+              '$top' => page_size,
+              '$skip' => skip
+            }
+          )
+        end
+
+        yielder << customers if customers.any?
+      end
+
+      customers = customer_enum.flat_map(&:itself)
+
+      content_type :json
+
+      { customers: customers }.to_json
+    end
+
+    get '/sales_invoices' do
+      sales_invoices = MyobAcumatica::Api::SalesInvoice.get_list(
         instance_name: ENV['INSTANCE_NAME'],
         access_token: params['access_token'],
-        query_params: {
-          '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
-          '$filter' => filter,
-          '$expand' => 'Contacts',
-          '$skip' => 0,
-          '$top' => 2
-        },
         endpoint_name: ENV['ENDPOINT_NAME'],
         endpoint_version: ENV['ENDPOINT_VERSION'],
         logger: Logger.new($stdout)
@@ -91,7 +145,23 @@ module MyobAcumaticIntegration
       content_type :json
 
       {
-        customers: customers
+        sales_invoices: sales_invoices
+      }.to_json
+    end
+
+    get '/invoices' do
+      invoices = MyobAcumatica::Api::Invoice.get_list(
+        instance_name: ENV['INSTANCE_NAME'],
+        access_token: params['access_token'],
+        endpoint_name: ENV['ENDPOINT_NAME'],
+        endpoint_version: ENV['ENDPOINT_VERSION'],
+        logger: Logger.new($stdout)
+      )
+
+      content_type :json
+
+      {
+        invoices: invoices
       }.to_json
     end
 
