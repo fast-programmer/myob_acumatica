@@ -300,6 +300,8 @@ module MyobAcumatica
           endpoint_name: endpoint_name,
           endpoint_version: endpoint_version,
           path: "Customer/#{ids}/files/#{filename}",
+          body: File.binread(filename),
+          content_type: 'application/octet-stream',
           logger: logger
         )
       end

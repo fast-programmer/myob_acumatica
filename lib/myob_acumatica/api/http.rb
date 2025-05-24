@@ -7,8 +7,9 @@ module MyobAcumatica
 
       # rubocop:disable Metrics/AbcSize
       def request(instance_name:, access_token:, method:,
-                  endpoint_name:, endpoint_version:,
-                  path:, query_params: {}, body: nil, logger: nil)
+                  endpoint_name:, endpoint_version:, path:,
+                  accept: 'application/json', content_type: 'application/json',
+                  query_params: {}, body: nil, logger: nil)
         uri = URI.join("https://#{instance_name}/", 'entity/', "#{endpoint_name}/", "#{endpoint_version}/", path.to_s)
         uri.query = URI.encode_www_form(query_params) unless query_params.empty?
 
@@ -26,9 +27,9 @@ module MyobAcumatica
 
         request = request_class.new(uri)
         request['Authorization'] = "Bearer #{access_token}"
-        request['Content-Type'] = 'application/json'
-        request['Accept'] = 'application/json'
-        request.body = body.to_json unless body.nil?
+        request['Content-Type'] = content_type
+        request['Accept'] = accept
+        request.body = content_type == 'application/json' ? body.to_json : body
 
         response = http.request(request)
 

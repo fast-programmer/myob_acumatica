@@ -16,13 +16,17 @@ instance_name = ENV['INSTANCE_NAME']
 access_token = ENV['ACCESS_TOKEN']
 logger = Logger.new($stdout)
 
-customer_key = 'JOHNGOOD'
+ad_hoc_schema = MyobAcumatica::Api::Customer.get_ad_hoc_schema(
+  instance_name: instance_name,
+  access_token: access_token,
+  logger: logger
+)
 
-customer = MyobAcumatica::Api::Customer.put_entity(
+customer_1 = MyobAcumatica::Api::Customer.put_entity(
   instance_name: instance_name,
   access_token: access_token,
   body: {
-    'CustomerID' => { 'value' => customer_key },
+    'CustomerID' => { 'value' => 'JOHNGOOD' },
     'CustomerName' => { 'value' => 'John Good' },
     'CustomerClass' => { 'value' => 'CUSTDFT' },
     'MainContact' => {
@@ -40,24 +44,65 @@ customer = MyobAcumatica::Api::Customer.put_entity(
   logger: logger
 )
 
-customer_id = customer['id']
-
-customer = MyobAcumatica::Api::Customer.put_entity(
+customer_1 = MyobAcumatica::Api::Customer.put_entity(
   instance_name: instance_name,
   access_token: access_token,
   body: {
-    'CustomerID' => { 'value' => customer_key },
+    'CustomerID' => { 'value' => 'JOHNGOOD' },
     'CustomerName' => { 'value' => 'John Good Updated 2' }
   },
   logger: logger
 )
 
+customer_2 = MyobAcumatica::Api::Customer.put_entity(
+  instance_name: instance_name,
+  access_token: access_token,
+  body: {
+    'CustomerID' => { 'value' => 'STEVEYELLOW' },
+    'CustomerName' => { 'value' => 'Steve Yellow' },
+    'CustomerClass' => { 'value' => 'CUSTDFT' },
+    'MainContact' => {
+      'Email' => { 'value' => 'demo@gmail.com' },
+      'Address' => {
+        'AddressLine1' => { 'value' => '2030 Lake Washington Blvd NE' },
+        'AddressLine2' => { 'value' => 'Suite 100' },
+        'City' => { 'value' => 'Kirkland' },
+        'State' => { 'value' => 'WA' },
+        'PostalCode' => { 'value' => '98033' },
+        'Country' => { 'value' => 'US' }
+      }
+    }
+  },
+  logger: logger
+)
+
+customer_1 = MyobAcumatica::Api::Customer.get_by_keys(
+  instance_name: instance_name,
+  access_token: access_token,
+  keys: ['JOHNGOOD'],
+  logger: logger
+)
+
 # FIXME
-# invoke_action_response = MyobAcumatica::Api::Customer.invoke_action_custom_action(
+# MyobAcumatica::Api::Customer.invoke_action_custom_action(
 #   instance_name: instance_name,
 #   access_token: access_token,
-#   action_name: "Activate",
-#   body: { 'id' => customer_id },
+#   action_name: "CreateContactFromCustomer",
+#   body: {
+#     "entity" => {
+#       "CustomerID" => { "value" => "JOHNGOOD" }
+#     },
+#     "parameters" => {
+#       "FirstName"    => { "value" => "John" },
+#       "LastName"     => { "value" => "Smith" },
+#       "JobTitle"     => { "value" => "Director" },
+#       "Phone1Type"   => { "value" => "Mobile" },
+#       "Phone1"       => { "value" => "0400123456" },
+#       "Phone2Type"   => { "value" => "Work" },
+#       "Phone2"       => { "value" => "0298765432" },
+#       "Email"        => { "value" => "john.smith@example.com" },
+#     }
+#   },
 #   logger: logger
 # )
 
@@ -65,28 +110,15 @@ customer = MyobAcumatica::Api::Customer.put_entity(
 # put_file_response = MyobAcumatica::Api::Customer.put_file(
 #   instance_name: instance_name,
 #   access_token: access_token,
-#   ids: customer_id,
-#   filename: "document.pdf",
+#   ids: customer["id"],
+#   filename: 'examples/dummy.pdf',
 #   logger: logger
 # )
 
 customer = MyobAcumatica::Api::Customer.get_by_id(
   instance_name: instance_name,
   access_token: access_token,
-  id: customer_id,
-  logger: logger
-)
-
-ad_hoc_schema = MyobAcumatica::Api::Customer.get_ad_hoc_schema(
-  instance_name: instance_name,
-  access_token: access_token,
-  logger: logger
-)
-
-customer = MyobAcumatica::Api::Customer.get_by_keys(
-  instance_name: instance_name,
-  access_token: access_token,
-  keys: [customer_key],
+  id: customer_1['id'],
   logger: logger
 )
 
@@ -104,17 +136,17 @@ customers = MyobAcumatica::Api::Customer.get_list(
   logger: logger
 )
 
-# MyobAcumatica::Api::Customer.delete_by_id(
-#   instance_name: instance_name,
-#   access_token: access_token,
-#   id: customer_id,
-#   logger: logger
-# )
+MyobAcumatica::Api::Customer.delete_by_id(
+  instance_name: instance_name,
+  access_token: access_token,
+  id: customer_1['id'],
+  logger: logger
+)
 
 MyobAcumatica::Api::Customer.delete_by_keys(
   instance_name: instance_name,
   access_token: access_token,
-  keys: [customer_key],
+  keys: ["STEVEYELLOW"],
   logger: logger
 )
 
