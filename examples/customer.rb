@@ -22,7 +22,7 @@ ad_hoc_schema = MyobAcumatica::Api::Customer.get_ad_hoc_schema(
   logger: logger
 )
 
-customer_1 = MyobAcumatica::Api::Customer.put_entity(
+customer1 = MyobAcumatica::Api::Customer.put_entity(
   instance_name: instance_name,
   access_token: access_token,
   body: {
@@ -44,7 +44,7 @@ customer_1 = MyobAcumatica::Api::Customer.put_entity(
   logger: logger
 )
 
-customer_1 = MyobAcumatica::Api::Customer.put_entity(
+customer1 = MyobAcumatica::Api::Customer.put_entity(
   instance_name: instance_name,
   access_token: access_token,
   body: {
@@ -54,7 +54,7 @@ customer_1 = MyobAcumatica::Api::Customer.put_entity(
   logger: logger
 )
 
-customer_2 = MyobAcumatica::Api::Customer.put_entity(
+customer2 = MyobAcumatica::Api::Customer.put_entity(
   instance_name: instance_name,
   access_token: access_token,
   body: {
@@ -76,7 +76,7 @@ customer_2 = MyobAcumatica::Api::Customer.put_entity(
   logger: logger
 )
 
-customer_1 = MyobAcumatica::Api::Customer.get_by_keys(
+customer1 = MyobAcumatica::Api::Customer.get_by_keys(
   instance_name: instance_name,
   access_token: access_token,
   keys: ['JOHNGOOD'],
@@ -90,9 +90,7 @@ customer_1 = MyobAcumatica::Api::Customer.get_by_keys(
 #   action_name: "CreateContactFromCustomer",
 #   body: {
 #     "entity" => {
-#       "CustomerID" => { "value" => "JOHNGOOD" }
-#     },
-#     "parameters" => {
+#       "CustomerID" => { "value" => "JOHNGOOD" },
 #       "FirstName"    => { "value" => "John" },
 #       "LastName"     => { "value" => "Smith" },
 #       "JobTitle"     => { "value" => "Director" },
@@ -101,6 +99,7 @@ customer_1 = MyobAcumatica::Api::Customer.get_by_keys(
 #       "Phone2Type"   => { "value" => "Work" },
 #       "Phone2"       => { "value" => "0298765432" },
 #       "Email"        => { "value" => "john.smith@example.com" },
+#       "ContactClass" => { "value" => "DEFAULT" }
 #     }
 #   },
 #   logger: logger
@@ -118,7 +117,7 @@ customer_1 = MyobAcumatica::Api::Customer.get_by_keys(
 customer = MyobAcumatica::Api::Customer.get_by_id(
   instance_name: instance_name,
   access_token: access_token,
-  id: customer_1['id'],
+  id: customer1['id'],
   logger: logger
 )
 
@@ -139,14 +138,14 @@ customers = MyobAcumatica::Api::Customer.get_list(
 MyobAcumatica::Api::Customer.delete_by_id(
   instance_name: instance_name,
   access_token: access_token,
-  id: customer_1['id'],
+  id: customer1['id'],
   logger: logger
 )
 
 MyobAcumatica::Api::Customer.delete_by_keys(
   instance_name: instance_name,
   access_token: access_token,
-  keys: ["STEVEYELLOW"],
+  keys: ['STEVEYELLOW'],
   logger: logger
 )
 

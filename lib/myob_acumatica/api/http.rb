@@ -5,12 +5,12 @@ module MyobAcumatica
     module Http
       module_function
 
-      # rubocop:disable Metrics/AbcSize
       def request(instance_name:, access_token:, method:,
                   endpoint_name:, endpoint_version:, path:,
                   accept: 'application/json', content_type: 'application/json',
                   query_params: {}, body: nil, logger: nil)
-        uri = URI.join("https://#{instance_name}/", 'entity/', "#{endpoint_name}/", "#{endpoint_version}/", path.to_s)
+        uri = URI.join("https://#{instance_name}/", 'entity/', "#{endpoint_name}/", "#{endpoint_version}/",
+                       path.to_s)
         uri.query = URI.encode_www_form(query_params) unless query_params.empty?
 
         http = Net::HTTP.new(uri.host, uri.port)
@@ -42,7 +42,6 @@ module MyobAcumatica
           raise MyobAcumatica::Error, "HTTP #{response.code}: #{response.body}"
         end
       end
-      # rubocop:enable Metrics/AbcSize
     end
   end
 end

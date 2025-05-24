@@ -39,3 +39,9 @@ Metrics/AbcSize:
 
 Metrics/CyclomaticComplexity:
   Max: 10
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
