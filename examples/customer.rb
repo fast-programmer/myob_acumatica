@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Lint/UselessAssignment
-
 require 'json'
 require 'logger'
 require 'byebug'
@@ -16,7 +14,7 @@ instance_name = ENV['INSTANCE_NAME']
 access_token = ENV['ACCESS_TOKEN']
 logger = Logger.new($stdout)
 
-ad_hoc_schema = MyobAcumatica::Api::Customer.get_ad_hoc_schema(
+MyobAcumatica::Api::Customer.get_ad_hoc_schema(
   instance_name: instance_name,
   access_token: access_token,
   logger: logger
@@ -48,9 +46,69 @@ customer1 = MyobAcumatica::Api::Customer.put_entity(
   instance_name: instance_name,
   access_token: access_token,
   body: {
-    'CustomerID' => { 'value' => 'JOHNGOOD' },
-    'CustomerName' => { 'value' => 'John Good Updated 2' }
+    'CustomerID' => { 'value' => customer1['CustomerID']['value'] },
+    'CustomerName' => { 'value' => 'John Good Updated' }
   },
+  logger: logger
+)
+
+customer1 = MyobAcumatica::Api::Customer.get_by_keys(
+  instance_name: instance_name,
+  access_token: access_token,
+  keys: [customer1['CustomerID']['value']],
+  logger: logger
+)
+
+MyobAcumatica::Api::Customer.invoke_action(
+  instance_name: instance_name,
+  access_token: access_token,
+  action_name: 'CreateContactFromCustomer',
+  entity: {
+    'CustomerID' => { 'value' => 'JOHNGOOD' }
+  },
+  parameters: {
+    'FirstName' => { 'value' => 'John' },
+    'LastName' => { 'value' => 'Smith' },
+    'JobTitle' => { 'value' => 'Director' },
+    'Email' => { 'value' => 'john.smith@example.com' },
+    'ContactClass' => { 'value' => 'DEFAULT' }
+  },
+  logger: logger
+)
+
+MyobAcumatica::Api::Customer.put_file(
+  instance_name: instance_name,
+  access_token: access_token,
+  keys: [customer1['CustomerID']['value']],
+  file_path: 'examples/dummy.pdf',
+  logger: logger
+)
+
+MyobAcumatica::Api::Customer.get_by_id(
+  instance_name: instance_name,
+  access_token: access_token,
+  id: customer1['id'],
+  logger: logger
+)
+
+MyobAcumatica::Api::Customer.get_list(
+  instance_name: instance_name,
+  access_token: access_token,
+  query_params: {
+    '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
+    '$filter' => "Status eq 'Active' and "\
+      "LastModifiedDateTime gt datetimeoffset'2020-08-18T23:59:59.999+04:00'",
+    '$expand' => 'Contacts',
+    '$skip' => 2,
+    '$top' => 3
+  },
+  logger: logger
+)
+
+MyobAcumatica::Api::Customer.delete_by_id(
+  instance_name: instance_name,
+  access_token: access_token,
+  id: customer1['id'],
   logger: logger
 )
 
@@ -76,77 +134,9 @@ customer2 = MyobAcumatica::Api::Customer.put_entity(
   logger: logger
 )
 
-customer1 = MyobAcumatica::Api::Customer.get_by_keys(
-  instance_name: instance_name,
-  access_token: access_token,
-  keys: ['JOHNGOOD'],
-  logger: logger
-)
-
-# FIXME
-# MyobAcumatica::Api::Customer.invoke_action_custom_action(
-#   instance_name: instance_name,
-#   access_token: access_token,
-#   action_name: "CreateContactFromCustomer",
-#   body: {
-#     "entity" => {
-#       "CustomerID" => { "value" => "JOHNGOOD" },
-#       "FirstName"    => { "value" => "John" },
-#       "LastName"     => { "value" => "Smith" },
-#       "JobTitle"     => { "value" => "Director" },
-#       "Phone1Type"   => { "value" => "Mobile" },
-#       "Phone1"       => { "value" => "0400123456" },
-#       "Phone2Type"   => { "value" => "Work" },
-#       "Phone2"       => { "value" => "0298765432" },
-#       "Email"        => { "value" => "john.smith@example.com" },
-#       "ContactClass" => { "value" => "DEFAULT" }
-#     }
-#   },
-#   logger: logger
-# )
-
-# FIXME
-# put_file_response = MyobAcumatica::Api::Customer.put_file(
-#   instance_name: instance_name,
-#   access_token: access_token,
-#   ids: customer["id"],
-#   filename: 'examples/dummy.pdf',
-#   logger: logger
-# )
-
-customer = MyobAcumatica::Api::Customer.get_by_id(
-  instance_name: instance_name,
-  access_token: access_token,
-  id: customer1['id'],
-  logger: logger
-)
-
-customers = MyobAcumatica::Api::Customer.get_list(
-  instance_name: instance_name,
-  access_token: access_token,
-  query_params: {
-    '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
-    '$filter' => "Status eq 'Active' and "\
-      "LastModifiedDateTime gt datetimeoffset'2020-08-18T23:59:59.999+04:00'",
-    '$expand' => 'Contacts',
-    '$skip' => 2,
-    '$top' => 3
-  },
-  logger: logger
-)
-
-MyobAcumatica::Api::Customer.delete_by_id(
-  instance_name: instance_name,
-  access_token: access_token,
-  id: customer1['id'],
-  logger: logger
-)
-
 MyobAcumatica::Api::Customer.delete_by_keys(
   instance_name: instance_name,
   access_token: access_token,
-  keys: ['STEVEYELLOW'],
+  keys: [customer2['CustomerID']['value']],
   logger: logger
 )
-
-# rubocop:enable Lint/UselessAssignment

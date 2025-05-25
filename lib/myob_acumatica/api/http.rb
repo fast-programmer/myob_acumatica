@@ -34,10 +34,12 @@ module MyobAcumatica
         response = http.request(request)
 
         case response
+        when Net::HTTPAccepted
+          { 'location' => response['Location'] }
         when Net::HTTPNoContent
           nil
         when Net::HTTPSuccess
-          JSON.parse(response.body)
+          response.body.empty? ? nil : JSON.parse(response.body)
         else
           raise MyobAcumatica::Error, "HTTP #{response.code}: #{response.body}"
         end

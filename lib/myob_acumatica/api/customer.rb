@@ -10,9 +10,9 @@ module MyobAcumatica
       # Deletes a customer by ID.
       # @example Delete a customer by ID
       #   MyobAcumatica::Api::Customer.delete_by_id(
-      #     access_token: '123...',
-      #    : 'example.myobadvanced.com',
-      #     id: '987...',
+      #     instance_name: 'example.myobadvanced.com',
+      #     access_token: '...',
+      #     id: '00000000-0000-4000-8000-000000000000',
       #     logger: Logger.new($stdout)
       #   )
       # @param instance_name [String] The instance name.
@@ -39,9 +39,9 @@ module MyobAcumatica
       # Deletes a customer by composite keys.
       # @example Delete a customer by keys
       #   MyobAcumatica::Api::Customer.delete_by_keys(
-      #     access_token: 'your_access_token',
-      #    : 'example.myobadvanced.com',
-      #     keys: ['key1'],
+      #     instance_name: 'example.myobadvanced.com',
+      #     access_token: '...',
+      #     keys: ['JOHNGOOD'],
       #     logger: Logger.new($stdout)
       #   )
       # @param access_token [String] The OAuth2 access token.
@@ -68,8 +68,8 @@ module MyobAcumatica
       # Retrieves the ad-hoc schema for the customer endpoint.
       # @example Retrieve the ad-hoc schema
       #   MyobAcumatica::Api::Customer.get_ad_hoc_schema(
-      #     access_token: 'your_access_token',
-      #    : 'example.myobadvanced.com',
+      #     instance_name: 'example.myobadvanced.com',
+      #     access_token: '...',
       #     logger: Logger.new($stdout)
       #   )
       # @param instance_name [String] The instance name.
@@ -95,9 +95,9 @@ module MyobAcumatica
       # Retrieves a customer by ID.
       # @example Retrieve a customer by ID
       #   MyobAcumatica::Api::Customer.get_by_id(
-      #     access_token: 'your_access_token',
       #     instance_name: 'example.myobadvanced.com',
-      #     id: 'customer_id',
+      #     access_token: '...',
+      #     id: '00000000-0000-4000-8000-000000000000',
       #     logger: Logger.new($stdout)
       #   )
       # @param instance_name [String] The instance name.
@@ -126,9 +126,9 @@ module MyobAcumatica
       # Retrieves a customer by keys.
       # @example Retrieve a customer by keys
       #   MyobAcumatica::Api::Customer.get_by_keys(
-      #     access_token: 'your_access_token',
       #     instance_name: 'example.myobadvanced.com',
-      #     keys: ['key1'],
+      #     access_token: '...',
+      #     keys: ['JOHNGOOD'],
       #     logger: Logger.new($stdout)
       #   )
       # @param instance_name [String] The of the instance.
@@ -157,8 +157,8 @@ module MyobAcumatica
       # Retrieves a list of customers.
       # @example Retrieve a list of customers with specific query parameters
       #   customers = MyobAcumatica::Api::Customer.get_list(
-      #     access_token: 'your_access_token',
       #     instance_name: 'example.myobadvanced.com',
+      #     access_token: '...',
       #     query_params: {
       #       '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
       #       '$filter' => "Status eq 'Active' and "\
@@ -169,7 +169,7 @@ module MyobAcumatica
       #     },
       #     logger: Logger.new($stdout)
       #   )
-      # @param instance_name [String] The of the instance.
+      # @param instance_name [String] The name of the instance.
       # @param access_token [String] The OAuth2 access token.
       # @param query_params [Hash] Additional query parameters for the request.
       # @param endpoint_name [String] The endpoint name.
@@ -191,27 +191,40 @@ module MyobAcumatica
         )
       end
 
-      # Invokes a custom action on a customer.
-      # @example Invoke a custom action on a customer
-      #   MyobAcumatica::Api::Customer.invoke_action_custom_action(
-      #     access_token: 'your_access_token',
-      #     instance_name: 'example.myobadvanced.com',
-      #     action_name: 'Activate',
-      #     body: { 'id' => 'customer_id' },
-      #     logger: Logger.new($stdout)
+      # Invokes a custom action on the Customer entity.
+      #
+      # @example Create a contact from a customer
+      #   MyobAcumatica::Api::Customer.invoke_action(
+      #     instance_name: instance_name,
+      #     access_token: access_token,
+      #     action_name: 'CreateContactFromCustomer',
+      #     entity: {
+      #       'CustomerID' => { 'value' => 'JOHNGOOD' }
+      #     },
+      #     parameters: {
+      #       'FirstName'    => { 'value' => 'John' },
+      #       'LastName'     => { 'value' => 'Smith' },
+      #       'JobTitle'     => { 'value' => 'Director' },
+      #       'Email'        => { 'value' => 'john.smith@example.com' },
+      #       'ContactClass' => { 'value' => 'DEFAULT' }
+      #     },
+      #     logger: logger
       #   )
-      # @param instance_name [String] The of the instance.
+      #
+      # @param instance_name [String] The Acumatica instance domain.
       # @param access_token [String] The OAuth2 access token.
-      # @param action_name [String] The name of the action to invoke.
-      # @param body [Hash] The request body parameters.
-      # @param endpoint_name [String] The endpoint name.
-      # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The response body
-      def invoke_action_custom_action(instance_name:, access_token:, action_name:, body:,
-                                      endpoint_name: ENDPOINT_NAME,
-                                      endpoint_version: ENDPOINT_VERSION,
-                                      logger: nil)
+      # @param action_name [String] The name of the action (e.g., 'CreateContactFromCustomer').
+      # @param entity [Hash] The record on which to invoke the action.
+      # @param parameters [Hash] Optional action parameters (default: {}).
+      # @param endpoint_name [String] The endpoint name (default: 'Default').
+      # @param endpoint_version [String] The endpoint version (default: '24.200.001').
+      # @param logger [Logger, nil] Optional logger for debugging.
+      # @return [nil, Hash]
+      def invoke_action(instance_name:, access_token:,
+                        action_name:, entity:, parameters: {},
+                        endpoint_name: ENDPOINT_NAME,
+                        endpoint_version: ENDPOINT_VERSION,
+                        logger: nil)
         Http.request(
           instance_name: instance_name,
           access_token: access_token,
@@ -219,17 +232,17 @@ module MyobAcumatica
           endpoint_name: endpoint_name,
           endpoint_version: endpoint_version,
           path: "Customer/#{action_name}",
-          body: body,
+          body: { 'entity' => entity, 'parameters' => parameters },
           logger: logger
         )
       end
 
-      alias invoke_action invoke_action_custom_action
+      alias invoke_action_custom_action invoke_action
 
       # Updates or creates a customer entity.
       # @example Update or create a customer entity with detailed information
       #   MyobAcumatica::Api::Customer.put_entity(
-      #     access_token: 'your_access_token',
+      #     access_token: '...',
       #     instance_name: 'example.myobadvanced.com',
       #     body: {
       #       'CustomerID' => { 'value' => 'JOHNGOOD' },
@@ -249,14 +262,14 @@ module MyobAcumatica
       #     },
       #     logger: Logger.new($stdout)
       #   )
-      # @param instance_name [String] The of the instance.
+      # @param instance_name [String] The name of the instance.
       # @param access_token [String] The OAuth2 access token.
       # @param body [Hash] The body of the request containing customer details.
       # @param query_params [Hash] Additional query parameters for the request.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The customer
+      # @return [Hash] The customer.
       def put_entity(instance_name:, access_token:, body:, query_params: {},
                      endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
                      logger: nil)
@@ -273,34 +286,53 @@ module MyobAcumatica
         )
       end
 
-      # Uploads a file for a customer.
-      # @example Upload a file for a customer
+      # Uploads a file to the given customer record by resolving the `files:put` link.
+      #
+      # @example Upload a file to a customer record
       #   MyobAcumatica::Api::Customer.put_file(
-      #     access_token: 'your_access_token',
       #     instance_name: 'example.myobadvanced.com',
-      #     ids: 'customer_id',
-      #     filename: 'document.pdf',
+      #     access_token: '...',
+      #     keys: ['JOHNGOOD'],
+      #     file_path: 'examples/dummy.pdf',
       #     logger: Logger.new($stdout)
       #   )
-      # @param instance_name [String] The of the instance.
+      #
+      # @param instance_name [String] The name of the instance.
       # @param access_token [String] The OAuth2 access token.
-      # @param ids [String] The customer ID.
-      # @param filename [String] The filename of the file to upload.
-      # @param endpoint_name [String] The endpoint name.
-      # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger for logging the request process.
-      # @return [Hash] The response body
-      def put_file(instance_name:, access_token:, ids:, filename:,
-                   endpoint_name: ENDPOINT_NAME, endpoint_version: ENDPOINT_VERSION,
+      # @param keys [Array<String>] The key(s) identifying the customer record.
+      # @param file_path [String] The full path to the file to be uploaded.
+      # @param endpoint_name [String] The endpoint name to use.
+      # @param endpoint_version [String] The endpoint version to use.
+      # @param logger [Logger, nil] Optional logger for HTTP debugging.
+      # @return [nil] Returns nil.
+      # @raise [MyobAcumatica::Error] If the upload fails.
+      def put_file(instance_name:, access_token:, keys:, file_path:,
+                   endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
                    logger: nil)
+        customer = get_by_keys(
+          instance_name: instance_name,
+          access_token: access_token,
+          keys: keys,
+          logger: logger
+        )
+
+        put_url_template = customer.dig('_links', 'files:put')
+
+        if put_url_template.nil?
+          raise MyobAcumatica::Error, 'files:put link not found'
+        end
+
+        filename = File.basename(file_path)
+        path = put_url_template.gsub('{filename}', filename)
+
         Http.request(
           instance_name: instance_name,
           access_token: access_token,
           method: :put,
           endpoint_name: endpoint_name,
           endpoint_version: endpoint_version,
-          path: "Customer/#{ids}/files/#{filename}",
-          body: File.binread(filename),
+          path: path,
+          body: File.binread(file_path),
           content_type: 'application/octet-stream',
           logger: logger
         )
