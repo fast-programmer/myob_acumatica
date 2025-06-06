@@ -1,11 +1,14 @@
-# Myob Acumatica
+# Ruby library for the MYOB Acumatica API
 
-Access the MYOB Acumatica HTTP API via Ruby
+A lightweight Ruby client for accessing the MYOB Acumatica REST API via OAuth2.
+
+---
 
 ## Installation
 
-Install the gem and add to the application's Gemfile by executing:
+Using Bundler:
 
+<<<<<<< HEAD
     $ bundle add myob_acumatica
 
 If bundler is not being used to manage dependencies, install the gem by executing:
@@ -29,17 +32,42 @@ MyobAcumatica::OAuth2::Token.authorize_url(
 )
 
 => https://{host}/identity/connect/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope=api+offline_access
+=======
+```bash
+bundle add myob_acumatica
+>>>>>>> 891270d (update readme)
 ```
 
-Then redirect users to this URL to start the authorization process.
+Without Bundler:
 
-### ii. Exchange the authorization code for an access token
+```bash
+gem install myob_acumatica
+```
 
-After the user has authorized the application, they will be redirected back to your application with an authorization code.
+---
 
-Use this code to request an access token:
+## Setup
+
+Set the following environment variables in your host application:
+
+```bash
+MYOB_ACUMATICA_INSTANCE_NAME=your-instance.myob.com
+MYOB_ACUMATICA_CLIENT_ID=your-client-id
+MYOB_ACUMATICA_CLIENT_SECRET=your-client-secret
+MYOB_ACUMATICA_REDIRECT_URI=http://localhost:4567/oauth2/callback
+MYOB_ACUMATICA_SCOPE=api offline_access
+MYOB_ACUMATICA_ENDPOINT_NAME=Default
+MYOB_ACUMATICA_ENDPOINT_VERSION=22.200.001
+```
+
+---
+
+## OAuth2 Flow
+
+Get the authorization URL to initiate login:
 
 ```ruby
+<<<<<<< HEAD
 MyobAcumatica::OAuth2::Token.authorize(
   host: ...,
   client_id: ...,
@@ -47,22 +75,31 @@ MyobAcumatica::OAuth2::Token.authorize(
   code: params["code"],
   redirect_uri: ...,
 )
+=======
+MyobAcumatica::OAuth2::Token.authorize_url
+```
+>>>>>>> 891270d (update readme)
 
-=> {
-  "access_token" => "abc",
+Exchange the code for an access token and a refresh token
+
+```ruby
+token = MyobAcumatica::OAuth2::Token.authorize(code: params[:code])
+```
+
+```ruby
+{
+  "access_token" => "...",
   "expires_in" => 3600,
   "token_type" => "Bearer",
-  "refresh_token" => "def",
+  "refresh_token" => "...",
   "scope" => "api offline_access"
 }
 ```
 
-
-### iii. Refresh the access token using the refresh token
-
-If the access token expires, you can use the refresh token received during the token exchange to obtain a new access token:
+Refresh the access token when expired:
 
 ```ruby
+<<<<<<< HEAD
 MyobAcumatica::OAuth2::Token.refresh(
   host: ENV['INSTANCE_HOST'],
   client_id: ENV['CLIENT_ID'],
@@ -72,11 +109,19 @@ MyobAcumatica::OAuth2::Token.refresh(
 )
 
 => {"access_token":"ghi",expires_in":3600,"token_type":"Bearer","refresh_token":"jkl","scope":"api offline_access"}
+=======
+token = MyobAcumatica::OAuth2::Token.refresh(refresh_token: token["refresh_token"])
+>>>>>>> 891270d (update readme)
 ```
 
-## 2. Hit the MYOB Accumatica API
+---
+
+## Customer Examples
+
+Create or update a customer:
 
 ```ruby
+<<<<<<< HEAD
 customers = MyobAcumatica::Api::Customer.get_list(
   access_token: token['access_token'],
   host: ...,
@@ -84,23 +129,168 @@ customers = MyobAcumatica::Api::Customer.get_list(
   endpoint_version: ...,
   query_params: { filter: 'IsActive eq true' },
   logger: Logger.new($stdout)
+=======
+MyobAcumatica::Api::Customer.put_entity(
+  access_token: token["access_token"],
+  entity: {
+    'CustomerID' => { 'value' => 'JOHNGOOD' },
+    'CustomerName' => { 'value' => 'John Good' },
+    'CustomerClass' => { 'value' => 'CUSTDFT' }
+  }
+>>>>>>> 891270d (update readme)
 )
 ```
 
+List customers:
+
+```ruby
+MyobAcumatica::Api::Customer.get_list(
+  access_token: token["access_token"],
+  query_params: { '$filter' => "Status eq 'Active'" }
+)
+```
+
+Get customer by keys:
+
+```ruby
+MyobAcumatica::Api::Customer.get_by_keys(
+  access_token: token["access_token"],
+  keys: ['JOHNGOOD']
+)
+```
+
+Delete a customer:
+
+```ruby
+MyobAcumatica::Api::Customer.delete_by_keys(
+  access_token: token["access_token"],
+  keys: ['JOHNGOOD']
+)
+```
+
+---
+
+## Invoice Examples
+
+Create an invoice:
+
+```ruby
+MyobAcumatica::Api::Invoice.put_entity(
+  access_token: token["access_token"],
+  entity: {
+    'CustomerID' => { 'value' => 'JOHNGOOD' },
+    'Date' => { 'value' => '2025-06-06' },
+    'Details' => [
+      {
+        'InventoryID' => { 'value' => 'CONSULTING' },
+        'Quantity' => { 'value' => 2 },
+        'UnitPrice' => { 'value' => 150.0 }
+      }
+    ]
+  }
+)
+```
+
+List invoices:
+
+```ruby
+MyobAcumatica::Api::Invoice.get_list(
+  access_token: token["access_token"],
+  query_params: {
+    '$filter' => "Status eq 'Open'",
+    '$top' => 10,
+    '$select' => 'InvoiceNbr,CustomerID,Status,Date'
+  }
+)
+```
+
+Get invoice by ID:
+
+```ruby
+MyobAcumatica::Api::Invoice.get_by_id(
+  access_token: token["access_token"],
+  id: '00000000-0000-0000-0000-000000000000'
+)
+```
+
+Delete an invoice:
+
+```ruby
+MyobAcumatica::Api::Invoice.delete_by_id(
+  access_token: token["access_token"],
+  id: '00000000-0000-0000-0000-000000000000'
+)
+```
+
+---
+
+## Documentation
+
+See full API reference and usage examples:
+➡️ https://www.rubydoc.info/gems/myob_acumatica
+
+---
+
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+### 1. Clone the repo
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```bash
+git clone https://github.com/fast-programmer/myob_acumatica.git
+cd myob_acumatica
+bundle install
+```
+
+### 2. Create a `.env` file
+
+```env
+MYOB_ACUMATICA_INSTANCE_NAME=your-instance.myob.com
+MYOB_ACUMATICA_CLIENT_ID=your-client-id
+MYOB_ACUMATICA_CLIENT_SECRET=your-client-secret
+MYOB_ACUMATICA_REDIRECT_URI=http://localhost:4567/oauth2/callback
+MYOB_ACUMATICA_SCOPE=api offline_access
+MYOB_ACUMATICA_ENDPOINT_NAME=Default
+MYOB_ACUMATICA_ENDPOINT_VERSION=22.200.001
+```
+
+### 3. Run the Sinatra example app
+
+This test app helps acquire an OAuth token and inspect customer data.
+
+```bash
+bundle exec ruby examples/app.rb
+```
+
+Visit in your browser:
+
+- http://localhost:4567/oauth2/authorize — start login
+- http://localhost:4567/oauth2/callback — receive tokens and fetch customer list
+
+### 4. Open an interactive shell
+
+```bash
+bin/console
+```
+
+Try this command with your token:
+
+```ruby
+MyobAcumatica::Api::Customer.get_list(access_token: token["access_token"])
+```
+
+---
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/fast-programmer/myob_acumatica. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/fast-programmer/myob_acumatica/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome at:
+https://github.com/fast-programmer/myob_acumatica
+
+Please follow the code of conduct:
+https://github.com/fast-programmer/myob_acumatica/blob/master/CODE_OF_CONDUCT.md
+
+---
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the MyobAcumatica project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/fast-programmer/myob_acumatica/blob/master/CODE_OF_CONDUCT.md).
+MIT — see the LICENSE
+https://opensource.org/licenses/MIT

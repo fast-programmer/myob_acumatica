@@ -10,8 +10,8 @@ require 'myob_acumatica'
 
 Dotenv.load
 
-instance_name = ENV['INSTANCE_NAME']
-access_token = ENV['ACCESS_TOKEN']
+instance_name = ENV['MYOB_ACUMATICA_INSTANCE_NAME']
+access_token = ENV['MYOB_ACUMATICA_ACCESS_TOKEN']
 logger = Logger.new($stdout)
 
 MyobAcumatica::Api::Customer.get_ad_hoc_schema(
@@ -23,7 +23,7 @@ MyobAcumatica::Api::Customer.get_ad_hoc_schema(
 customer1 = MyobAcumatica::Api::Customer.put_entity(
   instance_name: instance_name,
   access_token: access_token,
-  body: {
+  entity: {
     'CustomerID' => { 'value' => 'JOHNGOOD' },
     'CustomerName' => { 'value' => 'John Good' },
     'CustomerClass' => { 'value' => 'CUSTDFT' },
@@ -45,7 +45,7 @@ customer1 = MyobAcumatica::Api::Customer.put_entity(
 customer1 = MyobAcumatica::Api::Customer.put_entity(
   instance_name: instance_name,
   access_token: access_token,
-  body: {
+  entity: {
     'CustomerID' => { 'value' => customer1['CustomerID']['value'] },
     'CustomerName' => { 'value' => 'John Good Updated' }
   },
@@ -115,7 +115,7 @@ MyobAcumatica::Api::Customer.delete_by_id(
 customer2 = MyobAcumatica::Api::Customer.put_entity(
   instance_name: instance_name,
   access_token: access_token,
-  body: {
+  entity: {
     'CustomerID' => { 'value' => 'STEVEYELLOW' },
     'CustomerName' => { 'value' => 'Steve Yellow' },
     'CustomerClass' => { 'value' => 'CUSTDFT' },

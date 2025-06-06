@@ -8,8 +8,10 @@ Gem::Specification.new do |spec|
   spec.authors = ['Adam Mikulasev']
   spec.email = ['adammikulas@gmail.com']
 
-  spec.summary = 'Ruby client for the MYOB Acumatica HTTP API'
-  spec.homepage = 'https://www.myob.com/au/erp-software/products/myob-acumatica'
+  spec.summary = 'Ruby client for MYOB Acumatica'
+  spec.homepage = 'https://github.com/fast-programmer/myob_acumatica'
+  spec.metadata['source_code_uri'] = spec.homepage
+  spec.metadata['changelog_uri'] = "#{spec.homepage}/blob/main/CHANGELOG.md"
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 3.1.6'
 

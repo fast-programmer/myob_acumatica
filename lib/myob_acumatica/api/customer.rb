@@ -244,7 +244,7 @@ module MyobAcumatica
       #   MyobAcumatica::Api::Customer.put_entity(
       #     access_token: '...',
       #     instance_name: 'example.myobadvanced.com',
-      #     body: {
+      #     entity: {
       #       'CustomerID' => { 'value' => 'JOHNGOOD' },
       #       'CustomerName' => { 'value' => 'John Good' },
       #       'CustomerClass' => { 'value' => 'CUSTDFT' },
@@ -264,13 +264,13 @@ module MyobAcumatica
       #   )
       # @param instance_name [String] The name of the instance.
       # @param access_token [String] The OAuth2 access token.
-      # @param body [Hash] The body of the request containing customer details.
+      # @param entity [Hash] The customer entity
       # @param query_params [Hash] Additional query parameters for the request.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for logging the request process.
       # @return [Hash] The customer.
-      def put_entity(instance_name:, access_token:, body:, query_params: {},
+      def put_entity(instance_name:, access_token:, entity:, query_params: {},
                      endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
                      logger: nil)
         Http.request(
@@ -280,7 +280,7 @@ module MyobAcumatica
           endpoint_name: endpoint_name,
           endpoint_version: endpoint_version,
           path: 'Customer',
-          body: body,
+          body: entity,
           query_params: query_params,
           logger: logger
         )

@@ -17,10 +17,10 @@ module MyobAcumaticIntegration
 
     get '/oauth2/authorize' do
       authorize_url = MyobAcumatica::OAuth2::Token.authorize_url(
-        instance_name: ENV['INSTANCE_NAME'],
-        client_id: ENV['CLIENT_ID'],
-        redirect_uri: ENV['REDIRECT_URI'],
-        scope: ENV['SCOPE']
+        instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
+        client_id: ENV['MYOB_ACUMATICA_CLIENT_ID'],
+        redirect_uri: ENV['MYOB_ACUMATICA_REDIRECT_URI'],
+        scope: ENV['MYOB_ACUMATICA_SCOPE']
       )
 
       redirect authorize_url
@@ -28,19 +28,19 @@ module MyobAcumaticIntegration
 
     get '/oauth2/callback' do
       response = MyobAcumatica::OAuth2::Token.authorize(
-        instance_name: ENV['INSTANCE_NAME'],
-        client_id: ENV['CLIENT_ID'],
-        client_secret: ENV['CLIENT_SECRET'],
+        instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
+        client_id: ENV['MYOB_ACUMATICA_CLIENT_ID'],
+        client_secret: ENV['MYOB_ACUMATICA_CLIENT_SECRET'],
         code: params[:code],
-        redirect_uri: ENV['REDIRECT_URI'],
+        redirect_uri: ENV['MYOB_ACUMATICA_REDIRECT_URI'],
         logger: logger
       )
 
       customers = MyobAcumatica::Api::Customer.get_list(
-        instance_name: ENV['INSTANCE_NAME'],
+        instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
         access_token: response['access_token'],
-        endpoint_name: ENV['ENDPOINT_NAME'],
-        endpoint_version: ENV['ENDPOINT_VERSION'],
+        endpoint_name: ENV['MYOB_ACUMATICA_ENDPOINT_NAME'],
+        endpoint_version: ENV['MYOB_ACUMATICA_ENDPOINT_VERSION'],
         logger: Logger.new($stdout)
       )
 
@@ -54,7 +54,7 @@ module MyobAcumaticIntegration
 
     get '/oauth2/refresh' do
       response = MyobAcumatica::OAuth2::Token.refresh(
-        instance_name: ENV['INSTANCE_NAME'],
+        instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
         refresh_token: params[:refresh_token],
@@ -74,7 +74,7 @@ module MyobAcumaticIntegration
     #   filter = "Status eq 'Active' and LastModifiedDateTime gt datetimeoffset'#{timestamp}'"
 
     #   customers = MyobAcumatica::Api::Customer.get_list(
-    #     instance_name: ENV['INSTANCE_NAME'],
+    #     instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
     #     access_token: params['access_token'],
     #     query_params: {
     #       '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
@@ -83,8 +83,8 @@ module MyobAcumaticIntegration
     #       '$skip' => 0,
     #       '$top' => 2
     #     },
-    #     endpoint_name: ENV['ENDPOINT_NAME'],
-    #     endpoint_version: ENV['ENDPOINT_VERSION'],
+    #     endpoint_name: ENV['MYOB_ACUMATICA_ENDPOINT_NAME'],
+    #     endpoint_version: ENV['MYOB_ACUMATICA_ENDPOINT_VERSION'],
     #     logger: Logger.new($stdout)
     #   )
 
@@ -101,7 +101,7 @@ module MyobAcumaticIntegration
 
       customer_enum = Enumerator.new do |yielder|
         customers = MyobAcumatica::Api::Customer.get_list(
-          instance_name: ENV['INSTANCE_NAME'],
+          instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
           access_token: params['access_token'],
           query_params: {
             '$top' => page_size,
@@ -114,7 +114,7 @@ module MyobAcumaticIntegration
           skip += page_size
 
           customers = MyobAcumatica::Api::Customer.get_list(
-            instance_name: ENV['INSTANCE_NAME'],
+            instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
             access_token: params['access_token'],
             query_params: {
               '$top' => page_size,
@@ -135,10 +135,10 @@ module MyobAcumaticIntegration
 
     get '/sales_invoices' do
       sales_invoices = MyobAcumatica::Api::SalesInvoice.get_list(
-        instance_name: ENV['INSTANCE_NAME'],
+        instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
         access_token: params['access_token'],
-        endpoint_name: ENV['ENDPOINT_NAME'],
-        endpoint_version: ENV['ENDPOINT_VERSION'],
+        endpoint_name: ENV['MYOB_ACUMATICA_ENDPOINT_NAME'],
+        endpoint_version: ENV['MYOB_ACUMATICA_ENDPOINT_VERSION'],
         logger: Logger.new($stdout)
       )
 
@@ -151,10 +151,10 @@ module MyobAcumaticIntegration
 
     get '/invoices' do
       invoices = MyobAcumatica::Api::Invoice.get_list(
-        instance_name: ENV['INSTANCE_NAME'],
+        instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
         access_token: params['access_token'],
-        endpoint_name: ENV['ENDPOINT_NAME'],
-        endpoint_version: ENV['ENDPOINT_VERSION'],
+        endpoint_name: ENV['MYOB_ACUMATICA_ENDPOINT_NAME'],
+        endpoint_version: ENV['MYOB_ACUMATICA_ENDPOINT_VERSION'],
         logger: Logger.new($stdout)
       )
 
