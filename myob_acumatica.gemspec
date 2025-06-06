@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/fast-programmer/myob_acumatica'
   spec.metadata['changelog_uri'] = 'https://github.com/fast-programmer/myob_acumatica/blob/master/CHANGELOG.md'
+  spec.metadata['documentation_uri'] = 'https://www.rubydoc.info/gems/myob_acumatica'
 
   spec.files = Dir.chdir(__dir__) do
     `git ls-files -z`.split("\x0").reject do |f|
