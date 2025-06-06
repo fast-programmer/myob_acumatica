@@ -19,6 +19,7 @@ module MyobAcumatica
 end
 
 require_relative 'myob_acumatica/version'
+
 require_relative 'myob_acumatica/o_auth_2/http'
 require_relative 'myob_acumatica/o_auth_2/token'
 

@@ -6,15 +6,25 @@ module MyobAcumatica
     module Invoice
       module_function
 
-      # Deletes an invoice by session ID.
-      # @param instance_name [String] The instance name.
+      # Deletes an invoice by ID.
+      # @example Delete an invoice by ID
+      #   MyobAcumatica::Api::Invoice.delete_by_id(
+      #     access_token: '...',
+      #     id: '00000000-0000-4000-8000-000000000000',
+      #     instance_name: 'example.myobadvanced.com',
+      #     logger: Logger.new($stdout)
+      #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param id [String] The session ID (UUID).
+      # @param id [String] The unique ID of the invoice.
+      # @param instance_name [String] The instance name.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger.
-      def delete_by_id(instance_name:, access_token:, id:,
-                       endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
+      # @param logger [Logger, nil] Optional logger for logging the request process.
+      # @return [nil] Always nil.
+      def delete_by_id(access_token:, id:,
+                       instance_name: INSTANCE_NAME,
+                       endpoint_name: ENDPOINT_NAME,
+                       endpoint_version: ENDPOINT_VERSION,
                        logger: nil)
         Http.request(
           instance_name: instance_name,
@@ -27,15 +37,24 @@ module MyobAcumatica
         )
       end
 
-      # Deletes an invoice by key fields.
-      # @param instance_name [String] The instance name.
+      # Deletes an invoice by composite keys.
+      # @example Delete an invoice by keys
+      #   MyobAcumatica::Api::Invoice.delete_by_keys(
+      #     access_token: '...',
+      #     keys: ['AR', 'INV000123'],
+      #     instance_name: 'example.myobadvanced.com'
+      #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param keys [Array<String>] The composite keys.
+      # @param keys [Array<String>] An array of keys that uniquely identify the invoice.
+      # @param instance_name [String] The instance name.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger.
-      def delete_by_keys(instance_name:, access_token:, keys:,
-                         endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
+      # @param logger [Logger, nil] Optional logger for logging the request process.
+      # @return [nil] Always nil.
+      def delete_by_keys(access_token:, keys:,
+                         instance_name: INSTANCE_NAME,
+                         endpoint_name: ENDPOINT_NAME,
+                         endpoint_version: ENDPOINT_VERSION,
                          logger: nil)
         Http.request(
           instance_name: instance_name,
@@ -48,15 +67,22 @@ module MyobAcumatica
         )
       end
 
-      # Retrieves ad hoc schema.
-      # @param instance_name [String] The instance name.
+      # Retrieves the ad-hoc schema for the invoice endpoint.
+      # @example Retrieve the ad-hoc schema
+      #   MyobAcumatica::Api::Invoice.get_ad_hoc_schema(
+      #     access_token: '...',
+      #     instance_name: 'example.myobadvanced.com'
+      #   )
       # @param access_token [String] The OAuth2 access token.
+      # @param instance_name [String] The instance name.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger.
-      # @return [Hash] Ad hoc schema.
-      def get_ad_hoc_schema(instance_name:, access_token:,
-                            endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
+      # @param logger [Logger, nil] Optional logger for logging the request process.
+      # @return [Hash] The ad hoc schema
+      def get_ad_hoc_schema(access_token:,
+                            instance_name: INSTANCE_NAME,
+                            endpoint_name: ENDPOINT_NAME,
+                            endpoint_version: ENDPOINT_VERSION,
                             logger: nil)
         Http.request(
           instance_name: instance_name,
@@ -69,41 +95,25 @@ module MyobAcumatica
         )
       end
 
-      # Retrieves an invoice by session ID.
-      # @param instance_name [String] The instance name.
+      # Retrieves an invoice by keys.
+      # @example Retrieve an invoice by keys
+      #   MyobAcumatica::Api::Invoice.get_by_keys(
+      #     access_token: '...',
+      #     keys: ['AR', 'INV000123'],
+      #     instance_name: 'example.myobadvanced.com'
+      #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param id [String] The session ID.
-      # @param query_params [Hash] Optional query parameters.
+      # @param keys [Array<String>] An array of keys that uniquely identify the invoice.
+      # @param query_params [Hash] Additional query parameters for the request.
+      # @param instance_name [String] The instance name.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger.
+      # @param logger [Logger, nil] Optional logger for logging the request process.
       # @return [Hash] The invoice.
-      def get_by_id(instance_name:, access_token:, id:, query_params: {},
-                    endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
-                    logger: nil)
-        Http.request(
-          instance_name: instance_name,
-          access_token: access_token,
-          method: :get,
-          endpoint_name: endpoint_name,
-          endpoint_version: endpoint_version,
-          path: "Invoice/#{id}",
-          query_params: query_params,
-          logger: logger
-        )
-      end
-
-      # Retrieves an invoice by key fields.
-      # @param instance_name [String] The instance name.
-      # @param access_token [String] The OAuth2 access token.
-      # @param keys [Array<String>] The composite keys.
-      # @param query_params [Hash] Optional query parameters.
-      # @param endpoint_name [String] The endpoint name.
-      # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger.
-      # @return [Hash] The invoice.
-      def get_by_keys(instance_name:, access_token:, keys:, query_params: {},
-                      endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
+      def get_by_keys(access_token:, keys:, query_params: {},
+                      instance_name: INSTANCE_NAME,
+                      endpoint_name: ENDPOINT_NAME,
+                      endpoint_version: ENDPOINT_VERSION,
                       logger: nil)
         Http.request(
           instance_name: instance_name,
@@ -117,16 +127,57 @@ module MyobAcumatica
         )
       end
 
-      # Retrieves a list of invoices.
-      # @param instance_name [String] The instance name.
+      # Retrieves an invoice by unique ID.
+      #
+      # @example Retrieve an invoice by ID
+      #   MyobAcumatica::Api::Invoice.get_by_id(
+      #     access_token: '...',
+      #     id: 'b8c01a2d-ff7f-4f0f-bba5-abc123456789',
+      #   )
+      #
       # @param access_token [String] The OAuth2 access token.
-      # @param query_params [Hash] Optional query parameters.
+      # @param id [String] The unique invoice ID (UUID).
+      # @param query_params [Hash] Optional query parameters for the request.
+      # @param instance_name [String] The instance name.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger.
-      # @return [Array<Hash>] The list of invoices.
-      def get_list(instance_name:, access_token:, query_params: {},
-                   endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
+      # @param logger [Logger, nil] Optional logger for HTTP debugging.
+      # @return [Hash] The invoice with the given ID.
+      def get_by_id(access_token:, id:, query_params: {},
+                    instance_name: INSTANCE_NAME,
+                    endpoint_name: ENDPOINT_NAME,
+                    endpoint_version: ENDPOINT_VERSION,
+                    logger: nil)
+        Http.request(
+          instance_name: instance_name,
+          access_token: access_token,
+          method: :get,
+          endpoint_name: endpoint_name,
+          endpoint_version: endpoint_version,
+          path: "Invoice/#{id}",
+          query_params: query_params,
+          logger: logger
+        )
+      end
+
+      # Retrieves a list of invoices.
+      # @example Retrieve a list of invoices
+      #   MyobAcumatica::Api::Invoice.get_list(
+      #     access_token: '...',
+      #     query_params: { '$top' => 10 },
+      #     instance_name: 'example.myobadvanced.com'
+      #   )
+      # @param access_token [String] The OAuth2 access token.
+      # @param query_params [Hash] Additional query parameters for the request.
+      # @param instance_name [String] The instance name.
+      # @param endpoint_name [String] The endpoint name.
+      # @param endpoint_version [String] The endpoint version.
+      # @param logger [Logger, nil] Optional logger for logging the request process.
+      # @return [Array<Hash>] A list of invoices.
+      def get_list(access_token:, query_params: {},
+                   instance_name: INSTANCE_NAME,
+                   endpoint_name: ENDPOINT_NAME,
+                   endpoint_version: ENDPOINT_VERSION,
                    logger: nil)
         Http.request(
           instance_name: instance_name,
@@ -140,17 +191,29 @@ module MyobAcumatica
         )
       end
 
-      # Creates or updates an invoice.
-      # @param instance_name [String] The instance name.
+      # Creates or updates an invoice entity.
+      # @example Create or update an invoice
+      #   MyobAcumatica::Api::Invoice.put_entity(
+      #     access_token: '...',
+      #     entity: {
+      #       'CustomerID' => { 'value' => 'JOHNGOOD' },
+      #       'Type' => { 'value' => 'Invoice' },
+      #       'InvoiceNbr' => { 'value' => 'INV000123' }
+      #     },
+      #     instance_name: 'example.myobadvanced.com'
+      #   )
       # @param access_token [String] The OAuth2 access token.
-      # @param body [Hash] The invoice data.
-      # @param query_params [Hash] Optional query parameters.
+      # @param entity [Hash] The invoice entity to create or update.
+      # @param query_params [Hash] Additional query parameters for the request.
+      # @param instance_name [String] The instance name.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger.
-      # @return [Hash] The created or updated invoice.
-      def put_entity(instance_name:, access_token:, body:, query_params: {},
-                     endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
+      # @param logger [Logger, nil] Optional logger for logging the request process.
+      # @return [Hash] The updated or created invoice.
+      def put_entity(access_token:, entity:, query_params: {},
+                     instance_name: INSTANCE_NAME,
+                     endpoint_name: ENDPOINT_NAME,
+                     endpoint_version: ENDPOINT_VERSION,
                      logger: nil)
         Http.request(
           instance_name: instance_name,
@@ -159,47 +222,44 @@ module MyobAcumatica
           endpoint_name: endpoint_name,
           endpoint_version: endpoint_version,
           path: 'Invoice',
-          body: body,
+          body: entity,
           query_params: query_params,
           logger: logger
         )
       end
 
-      # Uploads a file to the given invoice record by resolving the `files:put` link.
+      # Uploads a file to a specific invoice record by resolving the `files:put` link.
       #
-      # @example Upload a file to a invoice record
+      # @example Upload a PDF to an invoice
       #   MyobAcumatica::Api::Invoice.put_file(
-      #     instance_name: 'example.myobadvanced.com',
       #     access_token: '...',
-      #     keys: ['Customer/Invoice', '000068'],
-      #     file_path: 'examples/dummy.pdf',
-      #     logger: Logger.new($stdout)
+      #     keys: ['AR', 'INV000123'],
+      #     file_path: 'examples/invoice.pdf',
+      #     instance_name: 'example.myobadvanced.com'
       #   )
-      #
-      # @param instance_name [String] The name of the instance.
       # @param access_token [String] The OAuth2 access token.
-      # @param keys [Array<String>] The key(s) identifying the invoice record.
-      # @param file_path [String] The full path to the file to be uploaded.
-      # @param endpoint_name [String] The endpoint name to use.
-      # @param endpoint_version [String] The endpoint version to use.
+      # @param keys [Array<String>] Key(s) identifying the invoice record.
+      # @param file_path [String] Full path to the file to be uploaded.
+      # @param instance_name [String] The instance name.
+      # @param endpoint_name [String] The endpoint name.
+      # @param endpoint_version [String] The endpoint version.
       # @param logger [Logger, nil] Optional logger for HTTP debugging.
-      # @return [nil] Returns nil.
+      # @return [nil] Returns nil if successful.
       # @raise [MyobAcumatica::Error] If the upload fails.
-      def put_file(instance_name:, access_token:, keys:, file_path:,
-                   endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
+      def put_file(access_token:, keys:, file_path:,
+                   instance_name: INSTANCE_NAME,
+                   endpoint_name: ENDPOINT_NAME,
+                   endpoint_version: ENDPOINT_VERSION,
                    logger: nil)
         invoice = get_by_keys(
-          instance_name: instance_name,
           access_token: access_token,
           keys: keys,
+          instance_name: instance_name,
           logger: logger
         )
 
         put_url_template = invoice.dig('_links', 'files:put')
-
-        if put_url_template.nil?
-          raise MyobAcumatica::Error, 'files:put link not found'
-        end
+        raise MyobAcumatica::Error, 'files:put link not found' unless put_url_template
 
         filename = File.basename(file_path)
         path = put_url_template.gsub('{filename}', filename)
@@ -219,35 +279,25 @@ module MyobAcumatica
 
       # Invokes a custom action on the Invoice entity.
       #
-      # @example Create a contact from a customer
-      #   MyobAcumatica::Api::Customer.invoke_action(
-      #     instance_name: instance_name,
-      #     access_token: access_token,
-      #     action_name: 'CreateContactFromCustomer',
-      #     entity: {
-      #       'CustomerID' => { 'value' => 'JOHNGOOD' }
-      #     },
-      #     parameters: {
-      #       'FirstName'    => { 'value' => 'John' },
-      #       'LastName'     => { 'value' => 'Smith' },
-      #       'JobTitle'     => { 'value' => 'Director' },
-      #       'Email'        => { 'value' => 'john.smith@example.com' },
-      #       'ContactClass' => { 'value' => 'DEFAULT' }
-      #     },
-      #     logger: logger
+      # @example Apply a payment or custom action
+      #   MyobAcumatica::Api::Invoice.invoke_action(
+      #     access_token: '...',
+      #     action_name: 'ReleaseInvoice',
+      #     entity: { 'Type' => { 'value' => 'Invoice' }, 'InvoiceNbr' => { 'value' => 'INV000123' } },
+      #     instance_name: 'example.myobadvanced.com'
       #   )
       #
-      # @param instance_name [String] The Acumatica instance domain.
       # @param access_token [String] The OAuth2 access token.
-      # @param action_name [String] The name of the action (e.g., 'CreateContactFromCustomer').
-      # @param entity [Hash] The record on which to invoke the action.
-      # @param parameters [Hash] Optional action parameters (default: {}).
-      # @param endpoint_name [String] The endpoint name (default: 'Default').
-      # @param endpoint_version [String] The endpoint version (default: '24.200.001').
-      # @param logger [Logger, nil] Optional logger for debugging.
-      # @return [nil, Hash]
-      def invoke_action(instance_name:, access_token:,
-                        action_name:, entity:, parameters: {},
+      # @param action_name [String] The name of the action to invoke.
+      # @param entity [Hash] The invoice entity on which to invoke the action.
+      # @param parameters [Hash] Optional parameters for the action.
+      # @param instance_name [String] The instance name.
+      # @param endpoint_name [String] The endpoint name.
+      # @param endpoint_version [String] The endpoint version.
+      # @param logger [Logger, nil] Optional logger for HTTP debugging.
+      # @return [Hash, nil] The response from the action.
+      def invoke_action(access_token:, action_name:, entity:, parameters: {},
+                        instance_name: INSTANCE_NAME,
                         endpoint_name: ENDPOINT_NAME,
                         endpoint_version: ENDPOINT_VERSION,
                         logger: nil)
@@ -257,23 +307,36 @@ module MyobAcumatica
           method: :post,
           endpoint_name: endpoint_name,
           endpoint_version: endpoint_version,
-          path: "Customer/#{action_name}",
+          path: "Invoice/#{action_name}",
           body: { 'entity' => entity, 'parameters' => parameters },
           logger: logger
         )
       end
 
-      alias invoke_action_custom_action invoke_action
-
       # Releases an invoice.
-      # @param instance_name [String] The instance name.
+      #
+      # @example Release an invoice
+      #   MyobAcumatica::Api::Invoice.release(
+      #     access_token: '...',
+      #     entity: {
+      #       'Type' => { 'value' => 'Invoice' },
+      #       'InvoiceNbr' => { 'value' => 'INV000123' }
+      #     },
+      #     instance_name: 'example.myobadvanced.com'
+      #   )
+      #
       # @param access_token [String] The OAuth2 access token.
-      # @param body [Hash] The invoice release parameters.
+      # @param entity [Hash] The entity.
+      # @param parameters [Hash] The parameters.
+      # @param instance_name [String] The instance name.
       # @param endpoint_name [String] The endpoint name.
       # @param endpoint_version [String] The endpoint version.
-      # @param logger [Logger, nil] Optional logger.
-      def release(instance_name:, access_token:, body:,
-                  endpoint_name: Api::ENDPOINT_NAME, endpoint_version: Api::ENDPOINT_VERSION,
+      # @param logger [Logger, nil] Optional logger for HTTP debugging.
+      # @return [Hash] The response from the release action.
+      def release(access_token:, entity:, parameters: nil,
+                  instance_name: INSTANCE_NAME,
+                  endpoint_name: ENDPOINT_NAME,
+                  endpoint_version: ENDPOINT_VERSION,
                   logger: nil)
         Http.request(
           instance_name: instance_name,
@@ -282,7 +345,7 @@ module MyobAcumatica
           endpoint_name: endpoint_name,
           endpoint_version: endpoint_version,
           path: 'Invoice/ReleaseInvoice',
-          body: body,
+          body: { 'entity' => entity, 'parameters' => parameters },
           logger: logger
         )
       end
