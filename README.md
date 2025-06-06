@@ -8,34 +8,8 @@ A lightweight Ruby client for accessing the MYOB Acumatica REST API via OAuth2.
 
 Using Bundler:
 
-<<<<<<< HEAD
-    $ bundle add myob_acumatica
-
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install myob_acumatica
-
-## Usage
-
-## 1. Get an access token using the OAuth2 Authorization Code Grant Flow
-
-### i. Generate Authorization URL
-
-To initiate the OAuth2 flow, generate an authorization URL:
-
-```ruby
-MyobAcumatica::OAuth2::Token.authorize_url(
-  host: ...,
-  client_id: ...,
-  redirect_uri: ...,
-  scope: 'api offline'
-)
-
-=> https://{host}/identity/connect/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope=api+offline_access
-=======
 ```bash
 bundle add myob_acumatica
->>>>>>> 891270d (update readme)
 ```
 
 Without Bundler:
@@ -67,18 +41,8 @@ MYOB_ACUMATICA_ENDPOINT_VERSION=22.200.001
 Get the authorization URL to initiate login:
 
 ```ruby
-<<<<<<< HEAD
-MyobAcumatica::OAuth2::Token.authorize(
-  host: ...,
-  client_id: ...,
-  client_secret: ...,
-  code: params["code"],
-  redirect_uri: ...,
-)
-=======
 MyobAcumatica::OAuth2::Token.authorize_url
 ```
->>>>>>> 891270d (update readme)
 
 Exchange the code for an access token and a refresh token
 
@@ -99,19 +63,7 @@ token = MyobAcumatica::OAuth2::Token.authorize(code: params[:code])
 Refresh the access token when expired:
 
 ```ruby
-<<<<<<< HEAD
-MyobAcumatica::OAuth2::Token.refresh(
-  host: ENV['INSTANCE_HOST'],
-  client_id: ENV['CLIENT_ID'],
-  client_secret: ENV['CLIENT_SECRET'],
-  refresh_token: params[:refresh_token],
-  logger: Logger.new($stdout)
-)
-
-=> {"access_token":"ghi",expires_in":3600,"token_type":"Bearer","refresh_token":"jkl","scope":"api offline_access"}
-=======
 token = MyobAcumatica::OAuth2::Token.refresh(refresh_token: token["refresh_token"])
->>>>>>> 891270d (update readme)
 ```
 
 ---
@@ -121,15 +73,6 @@ token = MyobAcumatica::OAuth2::Token.refresh(refresh_token: token["refresh_token
 Create or update a customer:
 
 ```ruby
-<<<<<<< HEAD
-customers = MyobAcumatica::Api::Customer.get_list(
-  access_token: token['access_token'],
-  host: ...,
-  endpoint_name: 'Default',
-  endpoint_version: ...,
-  query_params: { filter: 'IsActive eq true' },
-  logger: Logger.new($stdout)
-=======
 MyobAcumatica::Api::Customer.put_entity(
   access_token: token["access_token"],
   entity: {
@@ -137,7 +80,6 @@ MyobAcumatica::Api::Customer.put_entity(
     'CustomerName' => { 'value' => 'John Good' },
     'CustomerClass' => { 'value' => 'CUSTDFT' }
   }
->>>>>>> 891270d (update readme)
 )
 ```
 
