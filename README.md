@@ -168,8 +168,7 @@ MyobAcumatica::Api::Invoice.delete_by_id(
 
 ## Documentation
 
-See full API reference and usage examples:
-➡️ https://www.rubydoc.info/gems/myob_acumatica
+See full API reference and usage examples: [rubydoc.info/gems/myob_acumatica](https://www.rubydoc.info/gems/myob_acumatica)
 
 ---
 
