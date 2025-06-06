@@ -3,25 +3,20 @@
 require 'json'
 require 'logger'
 require 'byebug'
-require 'dotenv'
+require 'dotenv/load'
 require 'cgi'
 
 require 'myob_acumatica'
 
-Dotenv.load
-
-instance_name = ENV['MYOB_ACUMATICA_INSTANCE_NAME']
 access_token = ENV['MYOB_ACUMATICA_ACCESS_TOKEN']
 logger = Logger.new($stdout)
 
 MyobAcumatica::Api::Customer.get_ad_hoc_schema(
-  instance_name: instance_name,
   access_token: access_token,
   logger: logger
 )
 
 customer1 = MyobAcumatica::Api::Customer.put_entity(
-  instance_name: instance_name,
   access_token: access_token,
   entity: {
     'CustomerID' => { 'value' => 'JOHNGOOD' },
@@ -43,7 +38,6 @@ customer1 = MyobAcumatica::Api::Customer.put_entity(
 )
 
 customer1 = MyobAcumatica::Api::Customer.put_entity(
-  instance_name: instance_name,
   access_token: access_token,
   entity: {
     'CustomerID' => { 'value' => customer1['CustomerID']['value'] },
@@ -53,14 +47,12 @@ customer1 = MyobAcumatica::Api::Customer.put_entity(
 )
 
 customer1 = MyobAcumatica::Api::Customer.get_by_keys(
-  instance_name: instance_name,
   access_token: access_token,
   keys: [customer1['CustomerID']['value']],
   logger: logger
 )
 
 MyobAcumatica::Api::Customer.invoke_action(
-  instance_name: instance_name,
   access_token: access_token,
   action_name: 'CreateContactFromCustomer',
   entity: {
@@ -77,7 +69,6 @@ MyobAcumatica::Api::Customer.invoke_action(
 )
 
 MyobAcumatica::Api::Customer.put_file(
-  instance_name: instance_name,
   access_token: access_token,
   keys: [customer1['CustomerID']['value']],
   file_path: 'examples/dummy.pdf',
@@ -85,14 +76,12 @@ MyobAcumatica::Api::Customer.put_file(
 )
 
 MyobAcumatica::Api::Customer.get_by_id(
-  instance_name: instance_name,
   access_token: access_token,
   id: customer1['id'],
   logger: logger
 )
 
 MyobAcumatica::Api::Customer.get_list(
-  instance_name: instance_name,
   access_token: access_token,
   query_params: {
     '$select' => 'CustomerID, CustomerName, LastModifiedDateTime',
@@ -106,14 +95,12 @@ MyobAcumatica::Api::Customer.get_list(
 )
 
 MyobAcumatica::Api::Customer.delete_by_id(
-  instance_name: instance_name,
   access_token: access_token,
   id: customer1['id'],
   logger: logger
 )
 
 customer2 = MyobAcumatica::Api::Customer.put_entity(
-  instance_name: instance_name,
   access_token: access_token,
   entity: {
     'CustomerID' => { 'value' => 'STEVEYELLOW' },
@@ -135,7 +122,6 @@ customer2 = MyobAcumatica::Api::Customer.put_entity(
 )
 
 MyobAcumatica::Api::Customer.delete_by_keys(
-  instance_name: instance_name,
   access_token: access_token,
   keys: [customer2['CustomerID']['value']],
   logger: logger
