@@ -211,10 +211,10 @@ module MyobAcumatica
       # @param logger [Logger, nil] Optional logger for request debugging.
       # @return [Hash] The response from the server.
       def put_entity(access_token:, entity:, query_params: {},
-                    instance_name: INSTANCE_NAME,
-                    endpoint_name: ENDPOINT_NAME,
-                    endpoint_version: ENDPOINT_VERSION,
-                    logger: nil)
+                     instance_name: INSTANCE_NAME,
+                     endpoint_name: ENDPOINT_NAME,
+                     endpoint_version: ENDPOINT_VERSION,
+                     logger: nil)
         Http.request(
           instance_name: instance_name,
           access_token: access_token,
@@ -248,10 +248,10 @@ module MyobAcumatica
       # @return [nil] Returns nil if successful.
       # @raise [MyobAcumatica::Error] If the upload fails.
       def put_file(access_token:, keys:, file_path:,
-                  instance_name: INSTANCE_NAME,
-                  endpoint_name: ENDPOINT_NAME,
-                  endpoint_version: ENDPOINT_VERSION,
-                  logger: nil)
+                   instance_name: INSTANCE_NAME,
+                   endpoint_name: ENDPOINT_NAME,
+                   endpoint_version: ENDPOINT_VERSION,
+                   logger: nil)
         customer = get_by_keys(
           access_token: access_token,
           instance_name: instance_name,

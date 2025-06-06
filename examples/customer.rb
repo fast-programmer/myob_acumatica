@@ -52,21 +52,21 @@ customer1 = MyobAcumatica::Api::Customer.get_by_keys(
   logger: logger
 )
 
-MyobAcumatica::Api::Customer.invoke_action(
-  access_token: access_token,
-  action_name: 'CreateContactFromCustomer',
-  entity: {
-    'CustomerID' => { 'value' => 'JOHNGOOD' }
-  },
-  parameters: {
-    'FirstName' => { 'value' => 'John' },
-    'LastName' => { 'value' => 'Smith' },
-    'JobTitle' => { 'value' => 'Director' },
-    'Email' => { 'value' => 'john.smith@example.com' },
-    'ContactClass' => { 'value' => 'DEFAULT' }
-  },
-  logger: logger
-)
+# MyobAcumatica::Api::Customer.invoke_action(
+#   access_token: access_token,
+#   action_name: 'CreateContactFromCustomer',
+#   entity: {
+#     'CustomerID' => { 'value' => 'JOHNGOOD' }
+#   },
+#   parameters: {
+#     'FirstName' => { 'value' => 'John' },
+#     'LastName' => { 'value' => 'Smith' },
+#     'JobTitle' => { 'value' => 'Director' },
+#     'Email' => { 'value' => 'john.smith@example.com' },
+#     'ContactClass' => { 'value' => 'DEFAULT' }
+#   },
+#   logger: logger
+# )
 
 MyobAcumatica::Api::Customer.put_file(
   access_token: access_token,
