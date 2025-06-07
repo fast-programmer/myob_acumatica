@@ -1,6 +1,6 @@
-# Ruby library for the MYOB Acumatica API
+# Myob Acumatica
 
-A lightweight Ruby client for accessing the MYOB Acumatica REST API via OAuth2.
+A very simple to use Ruby library for integrating with the MYOB Acumatica REST API via OAuth2.
 
 ---
 
@@ -20,35 +20,48 @@ gem install myob_acumatica
 
 ---
 
-## Setup
+## Authorization Code Flow
 
-Set the following environment variables in your host application:
+This flow allows a client application to obtain an access token on behalf of a user, using an authorization code granted by the user after consent.
 
-```bash
-MYOB_ACUMATICA_INSTANCE_NAME=your-instance.myob.com
-MYOB_ACUMATICA_CLIENT_ID=your-client-id
-MYOB_ACUMATICA_CLIENT_SECRET=your-client-secret
-MYOB_ACUMATICA_REDIRECT_URI=http://localhost:4567/oauth2/callback
-MYOB_ACUMATICA_SCOPE=api offline_access
-MYOB_ACUMATICA_ENDPOINT_NAME=Default
-MYOB_ACUMATICA_ENDPOINT_VERSION=22.200.001
+### Generate the Authorization Request URL
+
+Redirect the user to the authorization endpoint to initiate the consent flow.
+
+```ruby
+MyobAcumatica::OAuth2::Token.authorize_url(
+  instance_name: 'example.myobadvanced.com',
+  redirect_uri: 'https://example.myobadvanced.com/oauth2/callback',
+  client_id: 'abc123',
+  scope: 'api offline_access'
+)
 ```
+
+This returns a URL such as:
+
+```
+https://example.myobadvanced.com/identity/connect/authorize?response_type=code&client_id=abc123&redirect_uri=https%3A%2F%2Fexample.myobadvanced.com%2Foauth2%2Fcallback&scope=api+offline_access
+```
+
+Send users to this URL to initiate the authorization code grant flow.
 
 ---
 
-## OAuth2 Flow
+### Exchange Authorization Code for Access Token
 
-Get the authorization URL to initiate login:
-
-```ruby
-MyobAcumatica::OAuth2::Token.authorize_url
-```
-
-Exchange the code for an access token and a refresh token
+After the user grants consent, Acumatica will redirect to your callback URL with a `code` parameter. Exchange it for an access token:
 
 ```ruby
-token = MyobAcumatica::OAuth2::Token.authorize(code: params[:code])
+token = MyobAcumatica::OAuth2::Token.authorize(
+  code: params[:code],
+  instance_name: 'example.myobadvanced.com',
+  redirect_uri: 'https://example.myobadvanced.com/oauth2/callback',
+  client_id: 'abc123',
+  client_secret: 'secret123'
+)
 ```
+
+Example response:
 
 ```ruby
 {
@@ -60,15 +73,29 @@ token = MyobAcumatica::OAuth2::Token.authorize(code: params[:code])
 }
 ```
 
-Refresh the access token when expired:
+---
+
+### Refresh the Access Token
+
+When the access token expires, use the `refresh_token` to obtain a new one without prompting the user again.
 
 ```ruby
-token = MyobAcumatica::OAuth2::Token.refresh(refresh_token: token["refresh_token"])
+token = MyobAcumatica::OAuth2::Token.refresh(
+  refresh_token: token["refresh_token"],
+  instance_name: 'example.myobadvanced.com',
+  client_id: 'abc123',
+  client_secret: 'secret123'
+)
 ```
+
+This returns a fresh token object with the same structure.
+
 
 ---
 
-## Customer Examples
+## Usage
+
+### Customers
 
 Create or update a customer:
 
@@ -112,7 +139,7 @@ MyobAcumatica::Api::Customer.delete_by_keys(
 
 ---
 
-## Invoice Examples
+### Invoices
 
 Create an invoice:
 
