@@ -1,6 +1,6 @@
 # Myob Acumatica
 
-A very simple to use Ruby library for integrating with the MYOB Acumatica REST API via OAuth2.
+A simple to use Ruby library for integrating with the MYOB Acumatica REST API via OAuth2.
 
 ---
 
@@ -30,7 +30,7 @@ Redirect the user to the authorization endpoint to initiate the consent flow.
 
 ```ruby
 MyobAcumatica::OAuth2::Token.authorize_url(
-  instance_name: 'example.myobadvanced.com',
+  instance_host: 'example.myobadvanced.com',
   redirect_uri: 'https://example.myobadvanced.com/oauth2/callback',
   client_id: 'abc123',
   scope: 'api offline_access'
@@ -54,7 +54,7 @@ After the user grants consent, Acumatica will redirect to your callback URL with
 ```ruby
 token = MyobAcumatica::OAuth2::Token.authorize(
   code: params[:code],
-  instance_name: 'example.myobadvanced.com',
+  instance_host: 'example.myobadvanced.com',
   redirect_uri: 'https://example.myobadvanced.com/oauth2/callback',
   client_id: 'abc123',
   client_secret: 'secret123'
@@ -82,7 +82,7 @@ When the access token expires, use the `refresh_token` to obtain a new one witho
 ```ruby
 token = MyobAcumatica::OAuth2::Token.refresh(
   refresh_token: token["refresh_token"],
-  instance_name: 'example.myobadvanced.com',
+  instance_host: 'example.myobadvanced.com',
   client_id: 'abc123',
   client_secret: 'secret123'
 )
@@ -212,7 +212,7 @@ bundle install
 ### 2. Create a `.env` file
 
 ```env
-MYOB_ACUMATICA_INSTANCE_NAME=your-instance.myob.com
+MYOB_ACUMATICA_INSTANCE_HOST=example.myob.com
 MYOB_ACUMATICA_CLIENT_ID=your-client-id
 MYOB_ACUMATICA_CLIENT_SECRET=your-client-secret
 MYOB_ACUMATICA_REDIRECT_URI=http://localhost:4567/oauth2/callback
