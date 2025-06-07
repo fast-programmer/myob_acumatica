@@ -37,7 +37,7 @@ MyobAcumatica::OAuth2::Token.authorize_url(
 )
 ```
 
-This returns a URL such as:
+This returns a URL like:
 
 ```
 https://example.myobadvanced.com/identity/connect/authorize?response_type=code&client_id=abc123&redirect_uri=https%3A%2F%2Fexample.myobadvanced.com%2Foauth2%2Fcallback&scope=api+offline_access
@@ -101,7 +101,10 @@ Create or update a customer:
 
 ```ruby
 MyobAcumatica::Api::Customer.put_entity(
-  access_token: token["access_token"],
+  access_token: token['access_token'],
+  instance_name: 'example.myobadvanced.com',
+  endpoint_name: 'Default',
+  endpoint_version: '20.200.001',
   entity: {
     'CustomerID' => { 'value' => 'JOHNGOOD' },
     'CustomerName' => { 'value' => 'John Good' },
@@ -114,7 +117,10 @@ List customers:
 
 ```ruby
 MyobAcumatica::Api::Customer.get_list(
-  access_token: token["access_token"],
+  access_token: token['access_token'],
+  instance_name: 'example.myobadvanced.com',
+  endpoint_name: 'Default',
+  endpoint_version: '20.200.001',
   query_params: { '$filter' => "Status eq 'Active'" }
 )
 ```
@@ -123,7 +129,10 @@ Get customer by keys:
 
 ```ruby
 MyobAcumatica::Api::Customer.get_by_keys(
-  access_token: token["access_token"],
+  access_token: token['access_token'],
+  instance_name: 'example.myobadvanced.com',
+  endpoint_name: 'Default',
+  endpoint_version: '20.200.001',
   keys: ['JOHNGOOD']
 )
 ```
@@ -132,7 +141,10 @@ Delete a customer:
 
 ```ruby
 MyobAcumatica::Api::Customer.delete_by_keys(
-  access_token: token["access_token"],
+  access_token: token['access_token'],
+  instance_name: 'example.myobadvanced.com',
+  endpoint_name: 'Default',
+  endpoint_version: '20.200.001',
   keys: ['JOHNGOOD']
 )
 ```
@@ -146,6 +158,9 @@ Create an invoice:
 ```ruby
 MyobAcumatica::Api::Invoice.put_entity(
   access_token: token["access_token"],
+  instance_name: 'example.myobadvanced.com',
+  endpoint_name: 'Default',
+  endpoint_version: '20.200.001',
   entity: {
     'CustomerID' => { 'value' => 'JOHNGOOD' },
     'Date' => { 'value' => '2025-06-06' },
@@ -165,6 +180,9 @@ List invoices:
 ```ruby
 MyobAcumatica::Api::Invoice.get_list(
   access_token: token["access_token"],
+  instance_name: 'example.myobadvanced.com',
+  endpoint_name: 'Default',
+  endpoint_version: '20.200.001',
   query_params: {
     '$filter' => "Status eq 'Open'",
     '$top' => 10,
@@ -178,6 +196,9 @@ Get invoice by ID:
 ```ruby
 MyobAcumatica::Api::Invoice.get_by_id(
   access_token: token["access_token"],
+  instance_name: 'example.myobadvanced.com',
+  endpoint_name: 'Default',
+  endpoint_version: '20.200.001',
   id: '00000000-0000-0000-0000-000000000000'
 )
 ```
@@ -187,6 +208,9 @@ Delete an invoice:
 ```ruby
 MyobAcumatica::Api::Invoice.delete_by_id(
   access_token: token["access_token"],
+  instance_name: 'example.myobadvanced.com',
+  endpoint_name: 'Default',
+  endpoint_version: '20.200.001',
   id: '00000000-0000-0000-0000-000000000000'
 )
 ```
