@@ -52,14 +52,49 @@ MyobAcumatica::Api::Invoice.get_by_keys(
   logger: logger
 )
 
-MyobAcumatica::Api::Invoice.get_list(
+invoices = MyobAcumatica::Api::Invoice.get_list(
   access_token: access_token,
   query_params: {
+    '$filter' => "Type eq 'Invoice'"
     # '$filter' => "Status eq 'Open' and "\
     #   "LastModifiedDateTime gt datetimeoffset'2020-08-18T23:59:59.999+04:00'",
     # '$expand' => 'Invoices',
-    '$skip' => 1,
-    '$top' => 4
+    # '$skip' => 1,
+    # '$top' => 4
+  },
+  logger: logger
+)
+
+credit_memo1 = MyobAcumatica::Api::Invoice.put_entity(
+  access_token: access_token,
+  entity: {
+    'Customer' => { 'value' => 'JOHNGOOD1' },
+    'CustomerID' => { 'value' => 'JOHNGOOD1' },
+    'Date' => { 'value' => Date.today.strftime('%Y-%m-%d') },
+    'DueDate' => { 'value' => (Date.today + 30).strftime('%Y-%m-%d') },
+    'Terms' => { 'value' => 'NET14DAYS' },
+    'Type' => { 'value' => 'Credit Memo' },
+    'Hold' => { 'value' => false },
+    'PostPeriod' => { 'value' => '08-2025' },
+    'BillingAddressOverride' => { 'value' => true },
+    'BillingAddress' => {
+      'AddressLine1' => { 'value' => 'Fillmore Str' },
+      'City' => { 'value' => 'San Francisco' },
+      'State' => { 'value' => 'CA' }
+    },
+    'custom' => {
+      'Document' => {
+        'DiscDate' => { 'value' => (Date.today + 10).strftime('%Y-%m-%dT00:00:00+00:00') }
+      }
+    }
+  },
+  logger: logger
+)
+
+credit_memos = MyobAcumatica::Api::Invoice.get_list(
+  access_token: access_token,
+  query_params: {
+    '$filter' => "Type eq 'Credit Memo'",
   },
   logger: logger
 )
