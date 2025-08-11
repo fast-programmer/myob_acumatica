@@ -24,6 +24,7 @@ invoice1 = MyobAcumatica::Api::Invoice.put_entity(
     'Terms' => { 'value' => 'NET14DAYS' },
     'Type' => { 'value' => 'Invoice' },
     'Hold' => { 'value' => false },
+    'PostPeriod' => { 'value' => '08-2025' },
     'BillingAddressOverride' => { 'value' => true },
     'BillingAddress' => {
       'AddressLine1' => { 'value' => 'Fillmore Str' },
@@ -99,6 +100,7 @@ invoice2 = MyobAcumatica::Api::Invoice.put_entity(
     'Terms' => { 'value' => 'NET14DAYS' },
     'Type' => { 'value' => 'Invoice' },
     'Hold' => { 'value' => false },
+    'PostPeriod' => { 'value' => '08-2025' },
     'BillingAddressOverride' => { 'value' => true },
     'BillingAddress' => {
       'AddressLine1' => { 'value' => 'Fillmore Str' },
