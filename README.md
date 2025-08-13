@@ -2,8 +2,6 @@
 
 A simple to use Ruby library for integrating with the MYOB Acumatica REST API via OAuth2.
 
----
-
 ## Installation
 
 Using Bundler:
@@ -17,8 +15,6 @@ Without Bundler:
 ```bash
 gem install myob_acumatica
 ```
-
----
 
 ## Configuration
 
@@ -57,8 +53,6 @@ MyobAcumatica::Api::Customer.get_list(
 )
 ```
 
----
-
 ## Authorization
 
 Allow a client application to obtain an access token on behalf of a user, using an authorization code granted by the user after consent.
@@ -83,8 +77,6 @@ https://example.myobadvanced.com/identity/connect/authorize?response_type=code&c
 ```
 
 Send users to this URL to initiate the authorization code grant flow.
-
----
 
 ### Exchange authorization code for access token
 
@@ -112,8 +104,6 @@ Example response:
 }
 ```
 
----
-
 ### Refresh access token
 
 When the access token expires, use the `refresh_token` to obtain a new one without prompting the user again.
@@ -129,8 +119,6 @@ token = MyobAcumatica::OAuth2::Token.refresh(
 
 This returns a fresh token object with the same structure.
 
-
----
 
 ## Usage
 
@@ -187,8 +175,6 @@ MyobAcumatica::Api::Customer.delete_by_keys(
   keys: ['JOHNGOOD']
 )
 ```
-
----
 
 ### Invoices
 
@@ -254,13 +240,9 @@ MyobAcumatica::Api::Invoice.delete_by_id(
 )
 ```
 
----
-
 ## Documentation
 
 See full API reference and usage examples: [rubydoc.info/gems/myob_acumatica](https://www.rubydoc.info/gems/myob_acumatica)
-
----
 
 ## Development
 
@@ -309,8 +291,6 @@ Try this command with your token:
 MyobAcumatica::Api::Customer.get_list(access_token: token["access_token"])
 ```
 
----
-
 ## Contributing
 
 Bug reports and pull requests are welcome at:
@@ -318,8 +298,6 @@ https://github.com/fast-programmer/myob_acumatica
 
 Please follow the code of conduct:
 https://github.com/fast-programmer/myob_acumatica/blob/master/CODE_OF_CONDUCT.md
-
----
 
 ## License
 
