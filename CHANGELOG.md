@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.5] - 2025-08-13
+### Added
+- **Currency API** support:
+  - `delete_by_id`
+  - `delete_by_keys`
+  - `get_ad_hoc_schema`
+  - `get_by_id`
+  - `get_by_keys`
+  - `get_list`
+  - `invoke_action`
+  - `put_entity`
+  - `put_file`
+
 ## [0.1.4] - 2025-08-13
 ### Added
 - **Tax API** support:
