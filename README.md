@@ -2,8 +2,6 @@
 
 A simple to use Ruby library for integrating with the MYOB Acumatica REST API via OAuth2.
 
----
-
 ## Installation
 
 Using Bundler:
@@ -18,13 +16,48 @@ Without Bundler:
 gem install myob_acumatica
 ```
 
----
+## Configuration
 
-## Authorization Code Flow
+Provide configuration via **environment variables** and **explicitly per call**.
 
-This flow allows a client application to obtain an access token on behalf of a user, using an authorization code granted by the user after consent.
+**Note**: explicit parameters always override environment variables.
 
-### Generate the Authorization Request URL
+### Environment variables
+
+```env
+MYOB_ACUMATICA_INSTANCE_NAME=example.myobadvanced.com
+MYOB_ACUMATICA_CLIENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx@Company
+MYOB_ACUMATICA_CLIENT_SECRET=xxxxxxxxxx_x_xxxxxxxxx
+MYOB_ACUMATICA_REDIRECT_URI=http://localhost:4567/oauth2/callback
+MYOB_ACUMATICA_SCOPE=api offline_access
+MYOB_ACUMATICA_ENDPOINT_NAME=Default
+MYOB_ACUMATICA_ENDPOINT_VERSION=20.200.001
+```
+
+```ruby
+MyobAcumatica::Api::Customer.get_list(
+  access_token: token["access_token"],
+  query_params: { '$filter' => "Status eq 'Active'" }
+)
+```
+
+### Explicit parameters
+
+```ruby
+MyobAcumatica::Api::Customer.get_list(
+  access_token: token["access_token"],
+  instance_name: "example.myobadvanced.com",
+  endpoint_name: "Default",
+  endpoint_version: "20.200.001",
+  query_params: { '$filter' => "Status eq 'Active'" }
+)
+```
+
+## Authorization
+
+Allow a client application to obtain an access token on behalf of a user, using an authorization code granted by the user after consent.
+
+### Generate authorization request URL
 
 Redirect the user to the authorization endpoint to initiate the consent flow.
 
@@ -45,9 +78,7 @@ https://example.myobadvanced.com/identity/connect/authorize?response_type=code&c
 
 Send users to this URL to initiate the authorization code grant flow.
 
----
-
-### Exchange Authorization Code for Access Token
+### Exchange authorization code for access token
 
 After the user grants consent, Acumatica will redirect to your callback URL with a `code` parameter. Exchange it for an access token:
 
@@ -73,9 +104,7 @@ Example response:
 }
 ```
 
----
-
-### Refresh the Access Token
+### Refresh access token
 
 When the access token expires, use the `refresh_token` to obtain a new one without prompting the user again.
 
@@ -90,8 +119,6 @@ token = MyobAcumatica::OAuth2::Token.refresh(
 
 This returns a fresh token object with the same structure.
 
-
----
 
 ## Usage
 
@@ -148,8 +175,6 @@ MyobAcumatica::Api::Customer.delete_by_keys(
   keys: ['JOHNGOOD']
 )
 ```
-
----
 
 ### Invoices
 
@@ -215,13 +240,9 @@ MyobAcumatica::Api::Invoice.delete_by_id(
 )
 ```
 
----
-
 ## Documentation
 
 See full API reference and usage examples: [rubydoc.info/gems/myob_acumatica](https://www.rubydoc.info/gems/myob_acumatica)
-
----
 
 ## Development
 
@@ -270,8 +291,6 @@ Try this command with your token:
 MyobAcumatica::Api::Customer.get_list(access_token: token["access_token"])
 ```
 
----
-
 ## Contributing
 
 Bug reports and pull requests are welcome at:
@@ -279,8 +298,6 @@ https://github.com/fast-programmer/myob_acumatica
 
 Please follow the code of conduct:
 https://github.com/fast-programmer/myob_acumatica/blob/master/CODE_OF_CONDUCT.md
-
----
 
 ## License
 
