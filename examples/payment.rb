@@ -42,7 +42,6 @@ invoice_1 = MyobAcumatica::Api::Invoice.put_entity(
     'Date' => { 'value' => Date.today.strftime('%Y-%m-%d') },
     'DueDate' => { 'value' => (Date.today + 30).strftime('%Y-%m-%d') },
     'Terms' => { 'value' => 'NET14DAYS' },
-    'Type' => { 'value' => 'Invoice' },
     'Hold' => { 'value' => false },
     'PostPeriod' => { 'value' => '08-2025' },
     'BillingAddressOverride' => { 'value' => true },
@@ -68,6 +67,8 @@ invoice_1 = MyobAcumatica::Api::Invoice.put_entity(
   logger: logger
 )
 
+puts "Created invoice: #{invoice_1['ReferenceNbr']['value']}"
+
 MyobAcumatica::Api::Invoice.release(
   access_token: access_token,
   entity: {
@@ -79,7 +80,6 @@ MyobAcumatica::Api::Invoice.release(
 payment_45 = MyobAcumatica::Api::Payment.put_entity(
   access_token: access_token,
   entity: {
-    'Type' => { 'value' => 'Payment' },
     'CustomerID' => { 'value' => 'JOHNGOODPAYER' },
     'ApplicationDate' => { 'value' => '2025-05-6' },
     'PostPeriod' => { 'value' => '11-2025' },
@@ -117,7 +117,6 @@ MyobAcumatica::Api::Payment.release_payment(
 payment_55 = MyobAcumatica::Api::Payment.put_entity(
   access_token: access_token,
   entity: {
-    'Type' => { 'value' => 'Payment' },
     'CustomerID' => { 'value' => 'JOHNGOODPAYER' },
     'CustomerLocationID' => { 'value' => 'MAIN' },
     'ApplicationDate' => { 'value' => '2025-05-6' },

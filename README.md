@@ -20,11 +20,50 @@ gem install myob_acumatica
 
 ---
 
-## Authorization Code Flow
+## Configuration
 
-This flow allows a client application to obtain an access token on behalf of a user, using an authorization code granted by the user after consent.
+You can provide configuration via **environment variables** and **explicitly per call**.
 
-### Generate the Authorization Request URL
+**Note**: explicit parameters always override environment variables.
+
+### Environment variables
+
+```env
+MYOB_ACUMATICA_INSTANCE_NAME=example.myobadvanced.com
+MYOB_ACUMATICA_CLIENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx@Company
+MYOB_ACUMATICA_CLIENT_SECRET=xxxxxxxxxx_x_xxxxxxxxx
+MYOB_ACUMATICA_REDIRECT_URI=http://localhost:4567/oauth2/callback
+MYOB_ACUMATICA_SCOPE=api offline_access
+MYOB_ACUMATICA_ENDPOINT_NAME=Default
+MYOB_ACUMATICA_ENDPOINT_VERSION=20.200.001
+```
+
+```ruby
+MyobAcumatica::Api::Customer.get_list(
+  access_token: token["access_token"],
+  query_params: { '$filter' => "Status eq 'Active'" }
+)
+```
+
+### Explicit parameters
+
+```ruby
+MyobAcumatica::Api::Customer.get_list(
+  access_token: token["access_token"],
+  instance_name: "example.myobadvanced.com",
+  endpoint_name: "Default",
+  endpoint_version: "20.200.001",
+  query_params: { '$filter' => "Status eq 'Active'" }
+)
+```
+
+---
+
+## Authorization
+
+Allow a client application to obtain an access token on behalf of a user, using an authorization code granted by the user after consent.
+
+### Generate authorization request URL
 
 Redirect the user to the authorization endpoint to initiate the consent flow.
 
@@ -47,7 +86,7 @@ Send users to this URL to initiate the authorization code grant flow.
 
 ---
 
-### Exchange Authorization Code for Access Token
+### Exchange authorization code for access token
 
 After the user grants consent, Acumatica will redirect to your callback URL with a `code` parameter. Exchange it for an access token:
 
@@ -75,7 +114,7 @@ Example response:
 
 ---
 
-### Refresh the Access Token
+### Refresh access token
 
 When the access token expires, use the `refresh_token` to obtain a new one without prompting the user again.
 
