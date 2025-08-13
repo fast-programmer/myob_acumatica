@@ -275,6 +275,7 @@ module MyobAcumatica
         )
         put_url_template = payment.dig('_links', 'files:put')
         raise MyobAcumatica::Error, 'files:put link not found' unless put_url_template
+
         filename = File.basename(file_path)
         path = put_url_template.gsub('{filename}', filename)
         Http.request(

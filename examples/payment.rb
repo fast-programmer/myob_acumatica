@@ -14,7 +14,7 @@ MyobAcumatica::Api::Payment.get_ad_hoc_schema(
   logger: logger
 )
 
-customer = MyobAcumatica::Api::Customer.put_entity(
+MyobAcumatica::Api::Customer.put_entity(
   access_token: access_token,
   entity: {
     'CustomerID' => { 'value' => 'JOHNGOODPAYER' },
@@ -35,7 +35,7 @@ customer = MyobAcumatica::Api::Customer.put_entity(
   logger: logger
 )
 
-invoice_1 = MyobAcumatica::Api::Invoice.put_entity(
+invoice1 = MyobAcumatica::Api::Invoice.put_entity(
   access_token: access_token,
   entity: {
     'Customer' => { 'value' => 'JOHNGOODPAYER' },
@@ -67,17 +67,17 @@ invoice_1 = MyobAcumatica::Api::Invoice.put_entity(
   logger: logger
 )
 
-puts "Created invoice: #{invoice_1['ReferenceNbr']['value']}"
+puts "Created invoice: #{invoice1['ReferenceNbr']['value']}"
 
 MyobAcumatica::Api::Invoice.release(
   access_token: access_token,
   entity: {
-    'id' => invoice_1['id']
+    'id' => invoice1['id']
   },
   logger: logger
 )
 
-payment_45 = MyobAcumatica::Api::Payment.put_entity(
+payment45 = MyobAcumatica::Api::Payment.put_entity(
   access_token: access_token,
   entity: {
     'CustomerID' => { 'value' => 'JOHNGOODPAYER' },
@@ -90,7 +90,7 @@ payment_45 = MyobAcumatica::Api::Payment.put_entity(
     'Applications' => [
       {
         'DocType' => { 'value' => 'Invoice' },
-        'ReferenceNbr' => { 'value' => invoice_1['ReferenceNbr']['value'] },
+        'ReferenceNbr' => { 'value' => invoice1['ReferenceNbr']['value'] },
         'AmountPaid' => { 'value' => 45.0 },
         'Apply' => { 'value' => true }
       }
@@ -102,7 +102,7 @@ payment_45 = MyobAcumatica::Api::Payment.put_entity(
 MyobAcumatica::Api::Payment.put_entity(
   access_token: access_token,
   entity: {
-    'id' => payment_45['id'],
+    'id' => payment45['id'],
     'Hold' => { 'value' => false }
   },
   logger: logger
@@ -110,11 +110,11 @@ MyobAcumatica::Api::Payment.put_entity(
 
 MyobAcumatica::Api::Payment.release_payment(
   access_token: access_token,
-  entity: { 'id' => payment_45['id'] },
+  entity: { 'id' => payment45['id'] },
   logger: logger
 )
 
-payment_55 = MyobAcumatica::Api::Payment.put_entity(
+payment55 = MyobAcumatica::Api::Payment.put_entity(
   access_token: access_token,
   entity: {
     'CustomerID' => { 'value' => 'JOHNGOODPAYER' },
@@ -128,7 +128,7 @@ payment_55 = MyobAcumatica::Api::Payment.put_entity(
     'Applications' => [
       {
         'DocType' => { 'value' => 'Invoice' },
-        'ReferenceNbr' => { 'value' => invoice_1['ReferenceNbr']['value'] },
+        'ReferenceNbr' => { 'value' => invoice1['ReferenceNbr']['value'] },
         'AmountPaid' => { 'value' => 55.0 },
         'Apply' => { 'value' => true }
       }
@@ -140,23 +140,23 @@ payment_55 = MyobAcumatica::Api::Payment.put_entity(
 MyobAcumatica::Api::Payment.invoke_action(
   access_token: access_token,
   action_name: 'ReleasePayment',
-  entity: { 'id' => payment_55['id'] },
+  entity: { 'id' => payment55['id'] },
   logger: logger
 )
 
-payment_45_by_id = MyobAcumatica::Api::Payment.get_by_id(
+MyobAcumatica::Api::Payment.get_by_id(
   access_token: access_token,
-  id: payment_45['id'],
+  id: payment45['id'],
   logger: logger
 )
 
-payment_55_by_keys = MyobAcumatica::Api::Payment.get_by_keys(
+MyobAcumatica::Api::Payment.get_by_keys(
   access_token: access_token,
-  keys: [payment_55['Type']['value'], payment_55['ReferenceNbr']['value']],
+  keys: [payment55['Type']['value'], payment55['ReferenceNbr']['value']],
   logger: logger
 )
 
-payment_list = MyobAcumatica::Api::Payment.get_list(
+MyobAcumatica::Api::Payment.get_list(
   access_token: access_token,
   query_params: {
     '$filter' => "Type eq 'Payment'"
@@ -166,7 +166,7 @@ payment_list = MyobAcumatica::Api::Payment.get_list(
 
 MyobAcumatica::Api::Payment.put_file(
   access_token: access_token,
-  keys: [payment_45['Type']['value'], payment_45['ReferenceNbr']['value']],
+  keys: [payment45['Type']['value'], payment45['ReferenceNbr']['value']],
   file_path: 'examples/dummy.pdf',
   logger: logger
 )
@@ -244,12 +244,12 @@ MyobAcumatica::Api::Payment.put_file(
 
 MyobAcumatica::Api::Payment.delete_by_keys(
   access_token: access_token,
-  keys: [payment_55['Type']['value'], payment_55['ReferenceNbr']['value']],
+  keys: [payment55['Type']['value'], payment55['ReferenceNbr']['value']],
   logger: logger
 )
 
 MyobAcumatica::Api::Payment.delete_by_id(
   access_token: access_token,
-  id: payment_45['id'],
+  id: payment45['id'],
   logger: logger
 )

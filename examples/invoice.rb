@@ -67,7 +67,7 @@ MyobAcumatica::Api::Invoice.get_by_keys(
   logger: logger
 )
 
-invoices = MyobAcumatica::Api::Invoice.get_list(
+MyobAcumatica::Api::Invoice.get_list(
   access_token: access_token,
   query_params: {
     '$filter' => "Type eq 'Invoice'"
@@ -115,10 +115,10 @@ MyobAcumatica::Api::Invoice.release(
   logger: logger
 )
 
-credit_memos = MyobAcumatica::Api::Invoice.get_list(
+MyobAcumatica::Api::Invoice.get_list(
   access_token: access_token,
   query_params: {
-    '$filter' => "Type eq 'Credit Memo'",
+    '$filter' => "Type eq 'Credit Memo'"
   },
   logger: logger
 )
