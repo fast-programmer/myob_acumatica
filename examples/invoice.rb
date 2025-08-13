@@ -18,7 +18,6 @@ invoice1 = MyobAcumatica::Api::Invoice.put_entity(
   access_token: access_token,
   entity: {
     'Customer' => { 'value' => 'JOHNGOOD1' },
-    'CustomerID' => { 'value' => 'JOHNGOOD1' },
     'Date' => { 'value' => Date.today.strftime('%Y-%m-%d') },
     'DueDate' => { 'value' => (Date.today + 30).strftime('%Y-%m-%d') },
     'Terms' => { 'value' => 'NET14DAYS' },
@@ -31,11 +30,27 @@ invoice1 = MyobAcumatica::Api::Invoice.put_entity(
       'City' => { 'value' => 'San Francisco' },
       'State' => { 'value' => 'CA' }
     },
+    'Description' => { 'value' => 'Test stock item' },
+    'Details' => [
+      {
+        'Description' => { 'value' => 'Pair of sneakers' },
+        'Quantity' => { 'value' => 1 },
+        'UnitPrice' => { 'value' => 100.00 }
+      }
+    ],
     'custom' => {
       'Document' => {
         'DiscDate' => { 'value' => (Date.today + 10).strftime('%Y-%m-%dT00:00:00+00:00') }
       }
     }
+  },
+  logger: logger
+)
+
+MyobAcumatica::Api::Invoice.release(
+  access_token: access_token,
+  entity: {
+    'id' => invoice1['id']
   },
   logger: logger
 )
@@ -91,6 +106,15 @@ credit_memo1 = MyobAcumatica::Api::Invoice.put_entity(
   logger: logger
 )
 
+MyobAcumatica::Api::Invoice.release(
+  access_token: access_token,
+  entity: {
+    'Type' => credit_memo1['Type'],
+    'ReferenceNbr' => credit_memo1['ReferenceNbr']
+  },
+  logger: logger
+)
+
 credit_memos = MyobAcumatica::Api::Invoice.get_list(
   access_token: access_token,
   query_params: {
@@ -112,12 +136,6 @@ MyobAcumatica::Api::Invoice.invoke_action(
   entity: { 'id' => invoice1['id'] },
   logger: logger
 )
-
-# MyobAcumatica::Api::Invoice.release(
-#   access_token: access_token,
-#   entity: { 'id' => invoice1['id'] },
-#   logger: logger
-# )
 
 MyobAcumatica::Api::Invoice.delete_by_keys(
   access_token: access_token,
