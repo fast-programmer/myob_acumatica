@@ -20,7 +20,7 @@ gem install myob_acumatica
 
 Provide configuration via **environment variables** or **explicitly per call**.
 
-**Note**: explicit parameters override environment variables.
+**Note**: explicit arguments override environment variables.
 
 ### Environment variables
 
