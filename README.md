@@ -296,9 +296,6 @@ MyobAcumatica::Api::Customer.get_list(access_token: token["access_token"])
 Bug reports and pull requests are welcome at:
 https://github.com/fast-programmer/myob_acumatica
 
-Please follow the code of conduct:
-https://github.com/fast-programmer/myob_acumatica/blob/master/CODE_OF_CONDUCT.md
-
 ## License
 
 MIT — see the LICENSE
