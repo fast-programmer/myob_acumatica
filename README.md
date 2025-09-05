@@ -18,7 +18,7 @@ gem install myob_acumatica
 
 ## Configuration
 
-Provide configuration via **environment variables** or **explicitly per call**.
+Provide via **environment variables** or **explicit arguments**.
 
 ### Environment variables
 
