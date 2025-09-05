@@ -20,8 +20,6 @@ gem install myob_acumatica
 
 Provide configuration via **environment variables** or **explicitly per call**.
 
-**Note**: explicit arguments override environment variables.
-
 ### Environment variables
 
 ```env
@@ -52,6 +50,8 @@ MyobAcumatica::Api::Customer.get_list(
   query_params: { '$filter' => "Status eq 'Active'" }
 )
 ```
+
+**Note**: explicit arguments override environment variables.
 
 ## Authorization
 
