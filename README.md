@@ -41,7 +41,7 @@ MyobAcumatica::Api::Customer.get_list(
 )
 ```
 
-### Explicit parameters
+### Explicit arguments
 
 ```ruby
 MyobAcumatica::Api::Customer.get_list(
