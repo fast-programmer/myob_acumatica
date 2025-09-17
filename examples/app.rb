@@ -41,6 +41,7 @@ module MyobAcumaticIntegration
         access_token: response['access_token'],
         endpoint_name: ENV['MYOB_ACUMATICA_ENDPOINT_NAME'],
         endpoint_version: ENV['MYOB_ACUMATICA_ENDPOINT_VERSION'],
+        query_params: { '$top' => 100, '$skip' => 0 },
         logger: Logger.new($stdout)
       )
 
@@ -96,39 +97,48 @@ module MyobAcumaticIntegration
     # end
 
     get '/customers' do
-      page_size = 1
-      skip = 0
+      # page_size = 1
+      # skip = 0
 
-      customer_enum = Enumerator.new do |yielder|
-        customers = MyobAcumatica::Api::Customer.get_list(
-          instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
-          access_token: params['access_token'],
-          query_params: {
-            '$top' => page_size,
-            '$skip' => skip
-          }
-        )
+      # customer_enum = Enumerator.new do |yielder|
+      #   customers = MyobAcumatica::Api::Customer.get_list(
+      #     instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
+      #     access_token: params['access_token'],
+      #     query_params: {
+      #       '$top' => page_size,
+      #       '$skip' => skip
+      #     }
+      #   )
 
-        while customers.size == page_size
-          yielder << customers
-          skip += page_size
+      #   while customers.size == page_size
+      #     yielder << customers
+      #     skip += page_size
 
-          customers = MyobAcumatica::Api::Customer.get_list(
-            instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
-            access_token: params['access_token'],
-            query_params: {
-              '$top' => page_size,
-              '$skip' => skip
-            }
-          )
-        end
+      #     customers = MyobAcumatica::Api::Customer.get_list(
+      #       instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
+      #       access_token: params['access_token'],
+      #       query_params: {
+      #         '$top' => page_size,
+      #         '$skip' => skip
+      #       }
+      #     )
+      #   end
 
-        yielder << customers if customers.any?
-      end
-
-      customers = customer_enum.flat_map(&:itself)
+      #   yielder << customers if customers.any?
 
       content_type :json
+
+      customers = MyobAcumatica::Api::Customer.get_list(
+        instance_name: ENV['MYOB_ACUMATICA_INSTANCE_NAME'],
+        access_token: params['access_token'],
+        endpoint_name: ENV['MYOB_ACUMATICA_ENDPOINT_NAME'],
+        endpoint_version: ENV['MYOB_ACUMATICA_ENDPOINT_VERSION'],
+        query_params: {
+          '$top' => 100,
+          '$skip' => 0
+        },
+        logger: Logger.new($stdout)
+      )
 
       { customers: customers }.to_json
     end

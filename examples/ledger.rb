@@ -54,14 +54,6 @@ MyobAcumatica::Api::Ledger.get_by_id(
 
 MyobAcumatica::Api::Ledger.get_list(
   access_token: access_token,
-  query_params: {
-    '$select' => 'LedgerID, Description, LastModifiedDateTime',
-    '$filter' => "Active eq true and "\
-      "LastModifiedDateTime gt datetimeoffset'2020-01-01T00:00:00.000+00:00'",
-    '$expand' => '',
-    '$skip' => 0,
-    '$top' => 10
-  },
   logger: logger
 )
 
