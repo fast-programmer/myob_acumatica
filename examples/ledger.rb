@@ -79,7 +79,6 @@ MyobAcumatica::Api::Ledger.delete_by_keys(
   logger: logger
 )
 
-# Example: invoke a custom action (uncomment and adjust to your action)
 # MyobAcumatica::Api::Ledger.invoke_action(
 #   access_token: access_token,
 #   action_name: 'RebuildBalances',

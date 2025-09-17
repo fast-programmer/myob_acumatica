@@ -246,11 +246,6 @@ module MyobAcumatica
 
       # Attaches a file to a specific ledger record by resolving the 'files:put' link.
       #
-      # This follows the same pattern as other entities in the gem:
-      # 1) GET by keys
-      # 2) Read the '_links'->'files:put' URI template
-      # 3) PUT the binary payload to that path with '{filename}' replaced
-      #
       # @example Upload a PDF to a ledger record
       #   MyobAcumatica::Api::Ledger.put_file(
       #     access_token: '...',
