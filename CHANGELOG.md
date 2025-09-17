@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.6] - 2025-09-17
+### Added
+- **Ledger API** support:
+  - `delete_by_id`
+  - `delete_by_keys`
+  - `get_ad_hoc_schema`
+  - `get_by_id`
+  - `get_by_keys`
+  - `get_list`
+  - `put_entity`
+  - `put_file`
+  - `invoke_action`
+
 ## [0.1.5] - 2025-08-13
 ### Added
 - **Currency API** support:
